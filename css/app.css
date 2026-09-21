@@ -1,0 +1,188 @@
+/* ==============================================================================
+   EVENCARD — ESTILOS GLOBALES Y SISTEMA DE DISEÑO
+   ============================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Paleta Principal SaaS */
+    --ec-primary: #6C63FF;
+    --ec-primary-hover: #5A52E0;
+    --ec-primary-light: #F0EFFF;
+    --ec-primary-glow: rgba(108, 99, 255, 0.25);
+
+    --ec-dark: #111827;
+    --ec-dark-surface: #1F2937;
+    --ec-light: #F8FAFC;
+    --ec-light-surface: #FFFFFF;
+
+    --ec-secondary: #64748B;
+    --ec-success: #10B981;
+    --ec-success-light: #ECFDF5;
+    --ec-danger: #EF4444;
+    --ec-danger-light: #FEF2F2;
+    --ec-warning: #F59E0B;
+    --ec-info: #06B6D4;
+
+    /* Bordes y Sombras */
+    --ec-border-color: #E2E8F0;
+    --ec-radius-sm: 8px;
+    --ec-radius-md: 14px;
+    --ec-radius-lg: 20px;
+    --ec-radius-xl: 28px;
+
+    --ec-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --ec-shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    --ec-shadow-lg: 0 20px 35px -10px rgba(108, 99, 255, 0.12), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    --ec-shadow-card: 0 4px 20px rgba(0, 0, 0, 0.04);
+
+    /* Tipografías */
+    --ec-font-main: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --ec-font-serif: 'Playfair Display', Georgia, serif;
+}
+
+body {
+    font-family: var(--ec-font-main);
+    color: var(--ec-dark);
+    background-color: var(--ec-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Transiciones suaves */
+.transition, a, button, .card {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tipografía de Encabezados */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ec-dark);
+}
+
+/* Botones Personalizados */
+.btn-primary {
+    background-color: var(--ec-primary);
+    border-color: var(--ec-primary);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.65rem 1.4rem;
+    border-radius: var(--ec-radius-md);
+    box-shadow: 0 4px 14px var(--ec-primary-glow);
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: var(--ec-primary-hover) !important;
+    border-color: var(--ec-primary-hover) !important;
+    box-shadow: 0 6px 20px rgba(108, 99, 255, 0.35) !important;
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    color: var(--ec-primary);
+    border-color: var(--ec-primary);
+    font-weight: 600;
+    border-radius: var(--ec-radius-md);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--ec-primary);
+    border-color: var(--ec-primary);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-light {
+    background-color: #FFFFFF;
+    border: 1px solid var(--ec-border-color);
+    color: var(--ec-dark);
+    font-weight: 500;
+    border-radius: var(--ec-radius-md);
+}
+
+.btn-light:hover {
+    background-color: #F1F5F9;
+    border-color: #CBD5E1;
+}
+
+/* Formularios Modernos */
+.form-control, .form-select {
+    border-radius: var(--ec-radius-md);
+    border: 1.5px solid var(--ec-border-color);
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
+    background-color: #ffffff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--ec-primary);
+    box-shadow: 0 0 0 4px var(--ec-primary-glow);
+    outline: none;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: #374151;
+    margin-bottom: 0.4rem;
+}
+
+/* Insignias / Badges */
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* Contenedores con Efecto Glassmorphism */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Tarjetas */
+.card {
+    border: 1px solid var(--ec-border-color);
+    border-radius: var(--ec-radius-lg);
+    background-color: #ffffff;
+}
+
+/* Gradientes Útiles */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #6C63FF 0%, #4834D4 100%);
+}
+
+.bg-gradient-warm {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #6C63FF 0%, #B565D8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Dropzone común */
+.dropzone-box {
+    border: 2px dashed var(--ec-border-color);
+    border-radius: var(--ec-radius-lg);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    background-color: #fafbfd;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.dropzone-box:hover, .dropzone-box.dragover {
+    border-color: var(--ec-primary);
+    background-color: var(--ec-primary-light);
+}
+
+/* Toasts */
+.toast {
+    border-radius: var(--ec-radius-md) !important;
+}

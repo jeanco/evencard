@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control — EvenCard</title>
+
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Estilos de EvenCard -->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="bg-light">
+
+    <!-- NAVBAR DASHBOARD -->
+    <header class="dashboard-navbar shadow-sm">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="dashboard.html">
+                <div class="bg-primary text-white rounded-3 p-1 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <i class="bi bi-envelope-heart-fill fs-5"></i>
+                </div>
+                <span class="fs-4 text-dark" style="letter-spacing: -0.5px;">Even<span class="text-primary">Card</span></span>
+            </a>
+
+            <!-- Acciones de Usuario -->
+            <div class="d-flex align-items-center gap-3">
+                <a href="crear-invitacion.html" class="btn btn-primary d-none d-sm-inline-flex align-items-center">
+                    <i class="bi bi-plus-lg me-1"></i> Crear invitación
+                </a>
+
+                <div class="dropdown">
+                    <button class="btn btn-light d-flex align-items-center gap-2 border-0 bg-transparent p-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="bg-primary-subtle text-primary fw-bold rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                            <i class="bi bi-person-fill fs-5"></i>
+                        </div>
+                        <span class="fw-semibold text-dark d-none d-md-inline small" id="user-email">Cargando...</span>
+                        <i class="bi bi-chevron-down text-muted small"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2">
+                        <li>
+                            <a class="dropdown-item py-2" href="perfil.html">
+                                <i class="bi bi-person-gear me-2 text-primary"></i> Mi Perfil
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item py-2" href="index.html">
+                                <i class="bi bi-house me-2 text-secondary"></i> Ir a la Web
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <button class="dropdown-item py-2 text-danger" id="btn-logout">
+                                <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="dashboard-container">
+        <!-- Banner de Bienvenida -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-2">
+            <div>
+                <h2 class="fw-bold text-dark mb-1">
+                    Hola, <span id="user-greeting" class="text-primary">...</span> 👋
+                </h2>
+                <p class="text-secondary mb-0">
+                    Administra tus invitaciones digitales desde un solo lugar.
+                </p>
+            </div>
+            <a href="crear-invitacion.html" class="btn btn-primary btn-lg shadow-sm d-inline-flex align-items-center justify-content-center">
+                <i class="bi bi-plus-circle-fill me-2 fs-5"></i> + Crear invitación
+            </a>
+        </div>
+
+        <!-- TARJETAS DE ESTADÍSTICAS -->
+        <div class="row g-3 mb-4">
+            <!-- Total Creadas -->
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-primary-subtle text-primary">
+                        <i class="bi bi-envelope-paper-fill"></i>
+                    </div>
+                    <div>
+                        <div class="stat-value" id="stat-total">0</div>
+                        <div class="stat-label">Invitaciones</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Publicadas -->
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-success-subtle text-success">
+                        <i class="bi bi-globe2"></i>
+                    </div>
+                    <div>
+                        <div class="stat-value" id="stat-published">0</div>
+                        <div class="stat-label">Publicadas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visitas -->
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-icon bg-info-subtle text-info">
+                        <i class="bi bi-eye-fill"></i>
+                    </div>
+                    <div>
+                        <div class="stat-value" id="stat-views">0</div>
+                        <div class="stat-label">Visitas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmaciones RSVP -->
+            <div class="col-6 col-lg-3">
+                <div class="stat-card" id="card-stat-rsvps" style="cursor: pointer;" title="Haz clic para ver las confirmaciones de tu evento">
+                    <div class="stat-icon bg-warning-subtle text-warning">
+                        <i class="bi bi-person-check-fill"></i>
+                    </div>
+                    <div>
+                        <div class="stat-value" id="stat-rsvps">0</div>
+                        <div class="stat-label">Confirmaciones <i class="bi bi-box-arrow-up-right small text-muted ms-1"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA DE FILTROS Y BÚSQUEDA -->
+        <div class="card border-0 shadow-sm rounded-4 p-3 mb-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <!-- Filtros por estado -->
+                <div class="d-flex gap-2 overflow-x-auto pb-1 pb-md-0">
+                    <button class="btn btn-primary btn-sm px-3 filter-pill active" data-filter="todos">
+                        Todas
+                    </button>
+                    <button class="btn btn-light btn-sm px-3 filter-pill" data-filter="publicada">
+                        <i class="bi bi-check-circle-fill text-success me-1"></i> Publicadas
+                    </button>
+                    <button class="btn btn-light btn-sm px-3 filter-pill" data-filter="borrador">
+                        <i class="bi bi-pencil-fill text-secondary me-1"></i> Borradores
+                    </button>
+                </div>
+
+                <!-- Buscador -->
+                <div class="position-relative" style="min-width: 260px;">
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-secondary"></i>
+                    <input type="text" class="form-control form-control-sm ps-5 rounded-pill" id="search-invitations" placeholder="Buscar por título o evento...">
+                </div>
+            </div>
+        </div>
+
+        <!-- ESTADO DE CARGA -->
+        <div id="dashboard-loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="text-secondary mt-3">Cargando tus invitaciones...</p>
+        </div>
+
+        <!-- GRID DE INVITACIONES -->
+        <div class="row g-4" id="invitations-container"></div>
+
+        <!-- ESTADO VACÍO (EMPTY STATE) -->
+        <div id="dashboard-empty" class="d-none text-center py-5 bg-white rounded-4 border border-dashed p-5 my-4">
+            <div class="bg-primary-subtle text-primary rounded-circle mx-auto p-3 mb-3 d-flex align-items-center justify-content-center" style="width: 72px; height: 72px;">
+                <i class="bi bi-envelope-plus fs-1"></i>
+            </div>
+            <h4 class="fw-bold text-dark mb-1">Aún no tienes ninguna invitación</h4>
+            <p class="text-secondary mb-4 max-w-500 mx-auto">
+                Crea tu primera invitación digital en minutos. Agrega tu fecha, fotos, ubicación y compártela fácilmente por WhatsApp.
+            </p>
+            <a href="crear-invitacion.html" class="btn btn-primary px-4 py-2">
+                <i class="bi bi-magic me-2"></i> Crear mi primera invitación
+            </a>
+        </div>
+    </main>
+
+    <!-- MODAL DE COMPARTIR -->
+    <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg p-3">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="shareModalLabel">Compartir Invitación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h6 class="fw-bold text-primary mb-1" id="share-modal-title">Evento</h6>
+                    <div id="share-status-notice" class="alert alert-warning small py-2 d-none">
+                        <i class="bi bi-exclamation-circle me-1"></i> Esta invitación está en <strong>borrador</strong>. Debes publicarla para que tus invitados puedan verla.
+                    </div>
+
+                    <!-- Código QR -->
+                    <div class="my-3" id="share-modal-qr"></div>
+
+                    <!-- Enlace público -->
+                    <label class="form-label text-start d-block small fw-semibold text-secondary">Enlace público:</label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="share-modal-url" readonly>
+                        <button class="btn btn-outline-primary" type="button" onclick="window.Utils.copyToClipboard(document.getElementById('share-modal-url').value)">
+                            <i class="bi bi-clipboard"></i> Copiar
+                        </button>
+                    </div>
+
+                    <!-- Botón directo de WhatsApp -->
+                    <a id="share-modal-wa" href="#" target="_blank" class="btn btn-success w-100 py-2 rounded-3 fw-bold mb-2">
+                        <i class="bi bi-whatsapp me-2"></i> Compartir por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE LISTA DE CONFIRMACIONES (RSVP) -->
+    <div class="modal fade" id="rsvpModal" tabindex="-1" aria-labelledby="rsvpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-0 pb-2 px-4 pt-4">
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark d-flex align-items-center gap-2" id="rsvpModalLabel">
+                            <span class="p-2 bg-success-subtle text-success rounded-3 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                                <i class="bi bi-people-fill fs-5"></i>
+                            </span>
+                            Lista de Confirmaciones
+                        </h5>
+                        <p class="text-secondary small mb-0 mt-1" id="rsvp-modal-subtitle">Cargando detalles...</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-success rounded-3 d-none" id="btn-export-rsvps" onclick="exportCurrentRsvps()">
+                            <i class="bi bi-download me-1"></i> Exportar CSV
+                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                </div>
+
+                <div class="modal-body px-4 py-3">
+                    <!-- Resumen Métricas -->
+                    <div class="row g-3 mb-4" id="rsvp-stats-row">
+                        <div class="col-4">
+                            <div class="p-3 bg-light rounded-3 text-center border">
+                                <small class="text-muted d-block">Confirmados</small>
+                                <strong class="fs-4 text-dark" id="rsvp-modal-count">0</strong>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="p-3 bg-light rounded-3 text-center border">
+                                <small class="text-muted d-block">Pases Totales</small>
+                                <strong class="fs-4 text-success" id="rsvp-modal-passes">0</strong>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="p-3 bg-light rounded-3 text-center border">
+                                <small class="text-muted d-block">Asistirán</small>
+                                <strong class="fs-4 text-primary" id="rsvp-modal-attending">0%</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estado de carga -->
+                    <div id="rsvp-modal-loading" class="text-center py-4">
+                        <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
+                        <span class="text-secondary small">Cargando lista de confirmaciones...</span>
+                    </div>
+
+                    <!-- Estado vacío -->
+                    <div id="rsvp-modal-empty" class="text-center py-4 d-none">
+                        <div class="bg-light rounded-circle d-inline-flex p-3 mb-2 text-muted">
+                            <i class="bi bi-envelope-open fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">Aún no hay confirmaciones</h6>
+                        <p class="text-secondary small mb-3">Comparte el enlace de tu tarjeta para que tus invitados confirmen su asistencia.</p>
+                    </div>
+
+                    <!-- Tabla de Confirmaciones -->
+                    <div class="table-responsive d-none" id="rsvp-table-container">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light small text-muted">
+                                <tr>
+                                    <th>Invitado</th>
+                                    <th>Pases</th>
+                                    <th>Teléfono / WhatsApp</th>
+                                    <th>Mensaje / Nota</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rsvp-modal-tbody">
+                                <!-- Filas dinámicas -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 pt-0 px-4 pb-4">
+                    <button type="button" class="btn btn-light rounded-3 px-4" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/invitation.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

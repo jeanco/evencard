@@ -1,0 +1,251 @@
+/* ==============================================================================
+   EVENCARD — ESTILOS DEL DASHBOARD Y WIZARD
+   ============================================================================== */
+
+/* Layout del Dashboard */
+.dashboard-navbar {
+    background: #FFFFFF;
+    border-bottom: 1px solid var(--ec-border-color);
+    padding: 0.85rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.dashboard-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+/* Tarjetas de Métricas */
+.stat-card {
+    background: #FFFFFF;
+    border-radius: var(--ec-radius-lg);
+    border: 1px solid var(--ec-border-color);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    box-shadow: var(--ec-shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--ec-shadow-md);
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.stat-value {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--ec-dark);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.88rem;
+    color: var(--ec-secondary);
+    font-weight: 500;
+}
+
+/* Tarjetas de Invitación en el Grid */
+.invitation-dashboard-card {
+    border: 1px solid var(--ec-border-color);
+    transition: all 0.25s ease;
+}
+
+.invitation-dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--ec-shadow-lg) !important;
+    border-color: rgba(108, 99, 255, 0.3);
+}
+
+.card-cover-wrap img {
+    transition: transform 0.4s ease;
+}
+
+.invitation-dashboard-card:hover .card-cover-wrap img {
+    transform: scale(1.04);
+}
+
+/* ==============================================================================
+   WIZARD DE CREACIÓN / EDICIÓN
+   ============================================================================== */
+.wizard-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.wizard-steps-nav {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 2.5rem;
+}
+
+.wizard-steps-nav::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: #E2E8F0;
+    z-index: 1;
+}
+
+.wizard-step-item {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    background: transparent;
+    cursor: pointer;
+}
+
+.wizard-step-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 2px solid #CBD5E1;
+    color: #64748B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin: 0 auto 0.5rem;
+    transition: all 0.25s ease;
+}
+
+.wizard-step-item.active .wizard-step-circle {
+    background: var(--ec-primary);
+    border-color: var(--ec-primary);
+    color: #FFFFFF;
+    box-shadow: 0 0 0 5px var(--ec-primary-glow);
+}
+
+.wizard-step-item.completed .wizard-step-circle {
+    background: var(--ec-success);
+    border-color: var(--ec-success);
+    color: #FFFFFF;
+}
+
+.wizard-step-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748B;
+    display: block;
+}
+
+.wizard-step-item.active .wizard-step-label {
+    color: var(--ec-primary);
+}
+
+@media (max-width: 768px) {
+    .wizard-step-label {
+        display: none;
+    }
+    .wizard-step-circle {
+        width: 38px;
+        height: 38px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Tarjetas de Selección de Tipo de Evento */
+.event-type-card {
+    border: 2px solid var(--ec-border-color);
+    border-radius: var(--ec-radius-lg);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    background: #FFFFFF;
+    transition: all 0.2s ease;
+    height: 100%;
+}
+
+.event-type-card:hover {
+    border-color: var(--ec-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px var(--ec-primary-glow);
+}
+
+.event-type-card.selected {
+    border-color: var(--ec-primary);
+    background: var(--ec-primary-light);
+    box-shadow: 0 0 0 3px var(--ec-primary-glow);
+}
+
+.event-type-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.6rem;
+    display: block;
+}
+
+/* Selector de Plantilla */
+.template-option-card {
+    border: 2px solid var(--ec-border-color);
+    border-radius: var(--ec-radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #FFFFFF;
+}
+
+.template-option-card:hover {
+    border-color: var(--ec-primary);
+    transform: translateY(-4px);
+}
+
+.template-option-card.selected {
+    border-color: var(--ec-primary);
+    box-shadow: 0 0 0 4px var(--ec-primary-glow);
+}
+
+.template-swatch {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+/* Mapa en Wizard */
+#map-picker {
+    height: 340px;
+    border-radius: var(--ec-radius-md);
+    border: 1px solid var(--ec-border-color);
+    z-index: 10;
+}
+
+/* Previsualización en Vivo de la Invitación */
+.preview-iframe-wrapper {
+    width: 100%;
+    max-width: 420px;
+    height: 720px;
+    margin: 0 auto;
+    border: 12px solid #1E1B4B;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    background: #FFFFFF;
+}
+
+.preview-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}

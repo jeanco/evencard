@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Invitación — EvenCard</title>
+
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Estilos de EvenCard -->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="bg-light">
+
+    <!-- NAVBAR DEL EDITOR -->
+    <header class="dashboard-navbar shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="dashboard.html">
+                <div class="bg-primary text-white rounded-3 p-1 d-flex align-items-center justify-content-center" style="width: 34px; height: 34px;">
+                    <i class="bi bi-envelope-heart-fill"></i>
+                </div>
+                <span class="fs-4 text-dark">Even<span class="text-primary">Card</span></span>
+            </a>
+
+            <div class="d-flex align-items-center gap-2">
+                <a href="dashboard.html" class="btn btn-sm btn-light">
+                    <i class="bi bi-arrow-left me-1"></i> Volver al panel
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-4 wizard-wrapper">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-1 mb-1">Editor de Invitación</span>
+                <h3 class="fw-bold text-dark mb-0" id="editor-header-title">Cargando invitación...</h3>
+            </div>
+            <a id="btn-view-public" href="#" target="_blank" class="btn btn-outline-primary btn-sm d-none">
+                <i class="bi bi-box-arrow-up-right me-1"></i> Ver Página Pública
+            </a>
+        </div>
+
+        <!-- Indicador de Pasos -->
+        <div class="wizard-steps-nav mb-4" id="wizard-nav">
+            <div class="wizard-step-item active" data-step="1" onclick="showStep(1)">
+                <div class="wizard-step-circle"><i class="bi bi-tag"></i></div>
+                <span class="wizard-step-label">1. Tipo</span>
+            </div>
+            <div class="wizard-step-item" data-step="2" onclick="showStep(2)">
+                <div class="wizard-step-circle"><i class="bi bi-info-circle"></i></div>
+                <span class="wizard-step-label">2. Datos</span>
+            </div>
+            <div class="wizard-step-item" data-step="3" onclick="showStep(3)">
+                <div class="wizard-step-circle"><i class="bi bi-geo-alt"></i></div>
+                <span class="wizard-step-label">3. Lugar</span>
+            </div>
+            <div class="wizard-step-item" data-step="4" onclick="showStep(4)">
+                <div class="wizard-step-circle"><i class="bi bi-image"></i></div>
+                <span class="wizard-step-label">4. Portada</span>
+            </div>
+            <div class="wizard-step-item" data-step="5" onclick="showStep(5)">
+                <div class="wizard-step-circle"><i class="bi bi-images"></i></div>
+                <span class="wizard-step-label">5. Galería</span>
+            </div>
+            <div class="wizard-step-item" data-step="6" onclick="showStep(6)">
+                <div class="wizard-step-circle"><i class="bi bi-palette"></i></div>
+                <span class="wizard-step-label">6. Diseño</span>
+            </div>
+            <div class="wizard-step-item" data-step="7" onclick="showStep(7)">
+                <div class="wizard-step-circle"><i class="bi bi-save"></i></div>
+                <span class="wizard-step-label">7. Guardar</span>
+            </div>
+        </div>
+
+        <form id="wizard-form" novalidate>
+            <!-- PASO 1 -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5" id="step-panel-1">
+                <h4 class="fw-bold mb-3">Tipo de evento</h4>
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-4"><div class="event-type-card" data-type="boda"><i class="bi bi-heart-fill event-type-icon text-danger"></i><h6 class="fw-bold mb-1">Boda</h6></div></div>
+                    <div class="col-6 col-md-4"><div class="event-type-card" data-type="cumpleanos"><i class="bi bi-cake2-fill event-type-icon text-warning"></i><h6 class="fw-bold mb-1">Cumpleaños</h6></div></div>
+                    <div class="col-6 col-md-4"><div class="event-type-card" data-type="quince_anos"><i class="bi bi-gem event-type-icon text-info"></i><h6 class="fw-bold mb-1">Quince Años</h6></div></div>
+                    <div class="col-6 col-md-4"><div class="event-type-card" data-type="bautizo"><i class="bi bi-droplet-fill event-type-icon text-primary"></i><h6 class="fw-bold mb-1">Bautizo</h6></div></div>
+                    <div class="col-6 col-md-4"><div class="event-type-card" data-type="baby_shower"><i class="bi bi-balloon-heart-fill event-type-icon" style="color: #ec4899;"></i><h6 class="fw-bold mb-1">Baby Shower</h6></div></div>
+                    <div class="col-6 col-md-4"><div class="event-type-card" data-type="primera_comunion"><i class="bi bi-sun-fill event-type-icon text-warning"></i><h6 class="fw-bold mb-1">Primera Comunión</h6></div></div>
+                    <div class="col-6 col-md-4"><div class="event-type-card" data-type="aniversario"><i class="bi bi-stars event-type-icon" style="color: #8b5cf6;"></i><h6 class="fw-bold mb-1">Aniversario</h6></div></div>
+                    <div class="col-6 col-md-4"><div class="event-type-card" data-type="empresarial"><i class="bi bi-briefcase-fill event-type-icon text-secondary"></i><h6 class="fw-bold mb-1">Empresarial</h6></div></div>
+                    <div class="col-6 col-md-4"><div class="event-type-card" data-type="otro"><i class="bi bi-calendar-event-fill event-type-icon text-primary"></i><h6 class="fw-bold mb-1">Otro</h6></div></div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary px-4" onclick="showStep(2)">Continuar <i class="bi bi-arrow-right ms-1"></i></button>
+                </div>
+            </div>
+
+            <!-- PASO 2 -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-2">
+                <h4 class="fw-bold mb-3">Información del evento</h4>
+                <div class="mb-3">
+                    <label class="form-label" for="event-title">Nombre del evento <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-lg" id="event-title" required>
+                </div>
+                <div class="p-3 bg-light rounded-4 mb-3 border">
+                    <h6 class="fw-bold mb-2">Protagonistas</h6>
+                    <div class="row g-3" id="people-inputs-container"></div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="event-date">Fecha</label>
+                        <input type="date" class="form-control" id="event-date" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="event-time">Hora</label>
+                        <input type="time" class="form-control" id="event-time" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label" for="event-description">Mensaje</label>
+                    <textarea class="form-control" id="event-description" rows="3"></textarea>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="showStep(1)"><i class="bi bi-arrow-left me-1"></i> Anterior</button>
+                    <button type="button" class="btn btn-primary px-4" onclick="showStep(3)">Continuar <i class="bi bi-arrow-right ms-1"></i></button>
+                </div>
+            </div>
+
+            <!-- PASO 3 -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-3">
+                <h4 class="fw-bold mb-3">Ubicación</h4>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="loc-name">Nombre del lugar</label>
+                        <input type="text" class="form-control" id="loc-name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="loc-address">Dirección</label>
+                        <input type="text" class="form-control" id="loc-address">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="loc-reference">Referencia</label>
+                    <input type="text" class="form-control" id="loc-reference">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label d-flex justify-content-between">
+                        <span><i class="bi bi-pin-map text-danger me-1"></i> Ubicación en el Mapa</span>
+                        <span class="small text-muted" id="coords-display">Lat: -, Lng: -</span>
+                    </label>
+                    <div id="map-picker" class="shadow-sm"></div>
+                    <input type="hidden" id="loc-lat">
+                    <input type="hidden" id="loc-lng">
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="showStep(2)"><i class="bi bi-arrow-left me-1"></i> Anterior</button>
+                    <button type="button" class="btn btn-primary px-4" onclick="showStep(4)">Continuar <i class="bi bi-arrow-right ms-1"></i></button>
+                </div>
+            </div>
+
+            <!-- PASO 4 -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-4">
+                <h4 class="fw-bold mb-3">Portada de la invitación</h4>
+                <div class="mb-4">
+                    <div class="dropzone-box" id="cover-dropzone" onclick="document.getElementById('cover-file-input').click()">
+                        <div id="cover-dropzone-content" class="d-none">
+                            <i class="bi bi-cloud-arrow-up-fill fs-1 text-primary mb-2 d-block"></i>
+                            <h6 class="fw-bold mb-1">Cambiar imagen de portada</h6>
+                        </div>
+                        <div id="cover-preview-wrapper" class="position-relative">
+                            <img id="cover-preview-img" src="" class="img-fluid rounded-3 shadow-sm object-fit-cover" style="max-height: 240px; width: 100%;">
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle" onclick="removeCoverImage(event)">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <input type="file" id="cover-file-input" class="d-none" accept="image/*">
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="showStep(3)"><i class="bi bi-arrow-left me-1"></i> Anterior</button>
+                    <button type="button" class="btn btn-primary px-4" onclick="showStep(5)">Continuar <i class="bi bi-arrow-right ms-1"></i></button>
+                </div>
+            </div>
+
+            <!-- PASO 5 -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0">Galería de fotos</h4>
+                    <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" onclick="document.getElementById('gallery-file-input').click()">
+                        <i class="bi bi-plus-lg me-1"></i> Agregar fotos
+                    </button>
+                    <input type="file" id="gallery-file-input" class="d-none" accept="image/*" multiple>
+                </div>
+                <div class="row g-3 mb-4" id="gallery-preview-container"></div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="showStep(4)"><i class="bi bi-arrow-left me-1"></i> Anterior</button>
+                    <button type="button" class="btn btn-primary px-4" onclick="showStep(6)">Continuar <i class="bi bi-arrow-right ms-1"></i></button>
+                </div>
+            </div>
+
+            <!-- PASO 6 -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-6">
+                <h4 class="fw-bold mb-3">Plantilla de diseño y secciones</h4>
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-4"><div class="template-option-card" data-template="elegante"><div class="template-swatch" style="background: linear-gradient(135deg, #FAF8F5 0%, #E8DFD1 100%); color: #2D2A26;"><span>Elegante</span></div><div class="p-2 text-center"><small class="fw-bold d-block">Elegante & Oro</small></div></div></div>
+                    <div class="col-6 col-md-4"><div class="template-option-card" data-template="romantica"><div class="template-swatch" style="background: linear-gradient(135deg, #FFF0F3 0%, #FAD2E1 100%); color: #B25068;"><span>Romántica</span></div><div class="p-2 text-center"><small class="fw-bold d-block">Romántica Pastel</small></div></div></div>
+                    <div class="col-6 col-md-4"><div class="template-option-card" data-template="moderna"><div class="template-swatch" style="background: linear-gradient(135deg, #111827 0%, #312E81 100%); color: #818CF8;"><span>Moderna</span></div><div class="p-2 text-center"><small class="fw-bold d-block">Moderna Neón</small></div></div></div>
+                    <div class="col-6 col-md-4"><div class="template-option-card" data-template="floral"><div class="template-swatch" style="background: linear-gradient(135deg, #EFF4EF 0%, #D1DDD1 100%); color: #2B4C33;"><span>Floral</span></div><div class="p-2 text-center"><small class="fw-bold d-block">Floral Salvia</small></div></div></div>
+                    <div class="col-6 col-md-4"><div class="template-option-card" data-template="minimalista"><div class="template-swatch" style="background: linear-gradient(135deg, #FFFFFF 0%, #E5E5E5 100%); color: #000; border-bottom: 1px solid #ddd;"><span>Minimal</span></div><div class="p-2 text-center"><small class="fw-bold d-block">Minimalista</small></div></div></div>
+                </div>
+
+                <h6 class="fw-bold mb-3">Módulos visibles</h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6"><div class="form-check form-switch p-3 bg-light rounded-3"><input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-countdown"><label class="form-check-label fw-semibold">Cuenta regresiva</label></div></div>
+                    <div class="col-md-6"><div class="form-check form-switch p-3 bg-light rounded-3"><input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-gallery"><label class="form-check-label fw-semibold">Galería de fotos</label></div></div>
+                    <div class="col-md-6"><div class="form-check form-switch p-3 bg-light rounded-3"><input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-location"><label class="form-check-label fw-semibold">Ubicación y mapa</label></div></div>
+                    <div class="col-md-6"><div class="form-check form-switch p-3 bg-light rounded-3"><input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-confirmation"><label class="form-check-label fw-semibold">Confirmación por WhatsApp & RSVP</label></div></div>
+                    <div class="col-md-6"><div class="form-check form-switch p-3 bg-light rounded-3"><input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-schedule"><label class="form-check-label fw-semibold">Cronograma</label></div></div>
+                    <div class="col-md-6"><div class="form-check form-switch p-3 bg-light rounded-3"><input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-share"><label class="form-check-label fw-semibold">Compartir y QR</label></div></div>
+                </div>
+
+                <div class="p-3 bg-light rounded-4 mb-4 border">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold mb-0">Itinerario</h6>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="addScheduleItem()"><i class="bi bi-plus-lg"></i> Agregar actividad</button>
+                    </div>
+                    <div id="schedule-items-container"></div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="showStep(5)"><i class="bi bi-arrow-left me-1"></i> Anterior</button>
+                    <button type="button" class="btn btn-primary px-4" onclick="showStep(7)">Continuar <i class="bi bi-arrow-right ms-1"></i></button>
+                </div>
+            </div>
+
+            <!-- PASO 7 -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-7">
+                <h4 class="fw-bold mb-3">Guardar y Actualizar</h4>
+                <div class="card p-3 border-0 bg-light rounded-4 mb-4">
+                    <label class="form-label fw-bold">Enlace personalizado (Slug):</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white text-muted border-end-0" id="base-url-display">...</span>
+                        <input type="text" class="form-control border-start-0 fw-bold text-primary" id="invitation-slug" required>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4 py-3" onclick="showStep(6)"><i class="bi bi-arrow-left me-1"></i> Anterior</button>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary px-4 py-3" id="btn-save-draft" onclick="submitUpdate('borrador')">
+                            <i class="bi bi-save me-1"></i> Guardar como Borrador
+                        </button>
+                        <button type="button" class="btn btn-primary px-5 py-3 shadow-lg" id="btn-publish" onclick="submitUpdate('publicada')">
+                            <i class="bi bi-check-circle-fill me-2"></i> Guardar y Publicar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/invitation.js"></script>
+
+    <script>
+        let invitationId = null;
+        let selectedEventType = 'boda';
+        let selectedTemplate = 'elegante';
+        let coverFile = null;
+        let coverUrl = '';
+        let mapInstance = null;
+        let mapMarker = null;
+        window.galleryManager = new GalleryManager('gallery-preview-container');
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await window.Auth.requireAuth('login.html');
+            if (!user) return;
+
+            const params = new URLSearchParams(window.location.search);
+            invitationId = params.get('id');
+            if (!invitationId) {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            document.getElementById('base-url-display').textContent = window.CONFIG.PUBLIC_INVITATION_BASE_URL;
+
+            initEventTypeCards();
+            initTemplateCards();
+            initCoverUpload();
+            initGalleryUpload();
+
+            await loadInvitationData(invitationId);
+        });
+
+        async function loadInvitationData(id) {
+            try {
+                const data = await window.InvitationService.getInvitationById(id);
+                if (!data) {
+                    window.Utils.showToast('No se encontró la invitación.', 'danger');
+                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                    return;
+                }
+
+                document.getElementById('editor-header-title').textContent = data.title;
+                document.getElementById('event-title').value = data.title || '';
+                document.getElementById('event-date').value = data.event_date || '';
+                document.getElementById('event-time').value = data.event_time || '';
+                document.getElementById('event-description').value = data.description || '';
+                document.getElementById('invitation-slug').value = data.slug || '';
+
+                // Botón ver pública si está publicada
+                if (data.status === 'publicada') {
+                    const btnPub = document.getElementById('btn-view-public');
+                    btnPub.href = window.CONFIG.PUBLIC_INVITATION_BASE_URL + data.slug;
+                    btnPub.classList.remove('d-none');
+                }
+
+                // Tipo de evento
+                selectedEventType = data.event_type || 'otro';
+                document.querySelectorAll('.event-type-card').forEach(c => {
+                    c.classList.toggle('selected', c.dataset.type === selectedEventType);
+                });
+                renderPeopleFieldsWithData(selectedEventType, data.people || []);
+
+                // Ubicación
+                if (data.location) {
+                    document.getElementById('loc-name').value = data.location.place_name || '';
+                    document.getElementById('loc-address').value = data.location.address || '';
+                    document.getElementById('loc-reference').value = data.location.reference || '';
+                    if (data.location.latitude && data.location.longitude) {
+                        document.getElementById('loc-lat').value = data.location.latitude;
+                        document.getElementById('loc-lng').value = data.location.longitude;
+                    }
+                }
+
+                // Portada
+                if (data.cover_image) {
+                    coverUrl = data.cover_image;
+                    document.getElementById('cover-preview-img').src = data.cover_image;
+                    document.getElementById('cover-preview-wrapper').classList.remove('d-none');
+                    document.getElementById('cover-dropzone-content').classList.add('d-none');
+                }
+
+                // Galería
+                if (data.gallery && data.gallery.length > 0) {
+                    window.galleryManager.setItems(data.gallery.map(g => ({
+                        id: g.id,
+                        imageUrl: g.image_url,
+                        storagePath: g.storage_path,
+                        sort_order: g.sort_order
+                    })));
+                }
+
+                // Plantilla
+                selectedTemplate = data.template_id || 'elegante';
+                document.querySelectorAll('.template-option-card').forEach(c => {
+                    c.classList.toggle('selected', c.dataset.template === selectedTemplate);
+                });
+
+                // Settings
+                if (data.settings) {
+                    document.getElementById('toggle-countdown').checked = data.settings.show_countdown ?? true;
+                    document.getElementById('toggle-gallery').checked = data.settings.show_gallery ?? true;
+                    document.getElementById('toggle-location').checked = data.settings.show_location ?? true;
+                    document.getElementById('toggle-confirmation').checked = data.settings.show_confirmation ?? true;
+                    document.getElementById('toggle-schedule').checked = data.settings.show_schedule ?? true;
+                    document.getElementById('toggle-share').checked = data.settings.show_share ?? true;
+                }
+
+                // Cronograma
+                if (data.schedule && data.schedule.length > 0) {
+                    data.schedule.forEach(s => addScheduleItem(s.event_time, s.title));
+                }
+
+            } catch (err) {
+                console.error('Error al cargar datos:', err);
+                window.Utils.showToast('Error al cargar datos de la invitación.', 'danger');
+            }
+        }
+
+        function renderPeopleFieldsWithData(type, people) {
+            const container = document.getElementById('people-inputs-container');
+            const getVal = (t) => (people.find(p => p.type === t)?.name || '');
+
+            if (type === 'boda') {
+                container.innerHTML = `
+                    <div class="col-md-6"><label class="form-label small">Novia</label><input type="text" class="form-control form-control-sm person-input" data-type="novia" value="${getVal('novia')}"></div>
+                    <div class="col-md-6"><label class="form-label small">Novio</label><input type="text" class="form-control form-control-sm person-input" data-type="novio" value="${getVal('novio')}"></div>
+                    <div class="col-md-6"><label class="form-label small">Padres de la novia</label><input type="text" class="form-control form-control-sm person-input" data-type="padres_novia" value="${getVal('padres_novia')}"></div>
+                    <div class="col-md-6"><label class="form-label small">Padres del novio</label><input type="text" class="form-control form-control-sm person-input" data-type="padres_novio" value="${getVal('padres_novio')}"></div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="col-md-6"><label class="form-label small">Agasajado</label><input type="text" class="form-control form-control-sm person-input" data-type="agasajado" value="${getVal('agasajado')}"></div>
+                    <div class="col-md-6"><label class="form-label small">Anfitrión</label><input type="text" class="form-control form-control-sm person-input" data-type="anfitrion" value="${getVal('anfitrion')}"></div>
+                `;
+            }
+        }
+
+        function initEventTypeCards() {
+            document.querySelectorAll('.event-type-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.event-type-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedEventType = card.dataset.type;
+                    renderPeopleFieldsWithData(selectedEventType, []);
+                });
+            });
+        }
+
+        function initTemplateCards() {
+            document.querySelectorAll('.template-option-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.template-option-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedTemplate = card.dataset.template;
+                });
+            });
+        }
+
+        function initCoverUpload() {
+            const fileInput = document.getElementById('cover-file-input');
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    try {
+                        window.Storage.validateFile(file);
+                        coverFile = file;
+                        document.getElementById('cover-preview-img').src = URL.createObjectURL(file);
+                        document.getElementById('cover-preview-wrapper').classList.remove('d-none');
+                        document.getElementById('cover-dropzone-content').classList.add('d-none');
+                    } catch (err) {
+                        window.Utils.showToast(err.message, 'warning');
+                    }
+                }
+            });
+        }
+
+        function removeCoverImage(e) {
+            e.stopPropagation();
+            coverFile = null;
+            coverUrl = '';
+            document.getElementById('cover-file-input').value = '';
+            document.getElementById('cover-preview-wrapper').classList.add('d-none');
+            document.getElementById('cover-dropzone-content').classList.remove('d-none');
+        }
+
+        function initGalleryUpload() {
+            document.getElementById('gallery-file-input').addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    window.galleryManager.addFiles(e.target.files);
+                }
+            });
+        }
+
+        function addScheduleItem(time = '', title = '') {
+            const container = document.getElementById('schedule-items-container');
+            const div = document.createElement('div');
+            div.className = 'd-flex gap-2 align-items-center mb-2 schedule-row';
+            div.innerHTML = `
+                <input type="time" class="form-control form-control-sm schedule-time" style="max-width: 130px;" value="${time || ''}">
+                <input type="text" class="form-control form-control-sm schedule-title flex-grow-1" value="${title || ''}" placeholder="Actividad">
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="this.parentElement.remove()"><i class="bi bi-trash"></i></button>
+            `;
+            container.appendChild(div);
+        }
+
+        function initMap() {
+            if (mapInstance) return;
+            const latVal = parseFloat(document.getElementById('loc-lat').value) || -12.046374;
+            const lngVal = parseFloat(document.getElementById('loc-lng').value) || -77.042793;
+
+            mapInstance = L.map('map-picker').setView([latVal, lngVal], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance);
+            mapMarker = L.marker([latVal, lngVal], { draggable: true }).addTo(mapInstance);
+
+            function updateMarker(lat, lng) {
+                document.getElementById('loc-lat').value = lat;
+                document.getElementById('loc-lng').value = lng;
+                document.getElementById('coords-display').textContent = `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
+            }
+
+            updateMarker(latVal, lngVal);
+
+            mapMarker.on('dragend', (e) => {
+                const pos = e.target.getLatLng();
+                updateMarker(pos.lat, pos.lng);
+            });
+
+            mapInstance.on('click', (e) => {
+                mapMarker.setLatLng(e.latlng);
+                updateMarker(e.latlng.lat, e.latlng.lng);
+            });
+
+            setTimeout(() => mapInstance.invalidateSize(), 300);
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.wizard-step-panel').forEach(p => p.classList.add('d-none'));
+            document.getElementById(`step-panel-${step}`).classList.remove('d-none');
+
+            document.querySelectorAll('.wizard-step-item').forEach(item => {
+                const itemStep = parseInt(item.dataset.step, 10);
+                if (itemStep === step) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (step === 3) setTimeout(initMap, 200);
+        }
+
+        async function submitUpdate(status = 'borrador') {
+            const title = document.getElementById('event-title').value.trim();
+            const slug = document.getElementById('invitation-slug').value.trim();
+            const date = document.getElementById('event-date').value;
+            const time = document.getElementById('event-time').value;
+
+            if (!title || !slug || !date) {
+                window.Utils.showToast('Completa el título, fecha y slug.', 'warning');
+                return;
+            }
+
+            const btn = status === 'publicada' ? document.getElementById('btn-publish') : document.getElementById('btn-save-draft');
+
+            try {
+                window.Utils.setLoadingButton(btn, true, 'Guardando cambios...');
+
+                if (coverFile) {
+                    window.Utils.showToast('Subiendo portada...', 'info');
+                    const up = await window.Storage.uploadImage(window.CONFIG.BUCKETS.COVERS, coverFile, invitationId);
+                    coverUrl = up.publicUrl;
+                }
+
+                let galleryList = [];
+                if (window.galleryManager.getItems().length > 0) {
+                    galleryList = await window.galleryManager.uploadPending(invitationId);
+                }
+
+                const people = [];
+                document.querySelectorAll('.person-input').forEach(inp => {
+                    if (inp.value.trim()) people.push({ type: inp.dataset.type, name: inp.value.trim() });
+                });
+
+                const schedule = [];
+                document.querySelectorAll('.schedule-row').forEach(row => {
+                    const timeVal = row.querySelector('.schedule-time').value;
+                    const titleVal = row.querySelector('.schedule-title').value.trim();
+                    if (titleVal) schedule.push({ event_time: timeVal || null, title: titleVal });
+                });
+
+                const payload = {
+                    event_type: selectedEventType,
+                    title: title,
+                    slug: slug,
+                    status: status,
+                    description: document.getElementById('event-description').value.trim(),
+                    event_date: date,
+                    event_time: time,
+                    cover_image: coverUrl || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+                    template_id: selectedTemplate,
+                    people: people,
+                    location: {
+                        place_name: document.getElementById('loc-name').value.trim(),
+                        address: document.getElementById('loc-address').value.trim(),
+                        reference: document.getElementById('loc-reference').value.trim(),
+                        latitude: document.getElementById('loc-lat').value || null,
+                        longitude: document.getElementById('loc-lng').value || null
+                    },
+                    gallery: galleryList,
+                    schedule: schedule,
+                    settings: {
+                        show_countdown: document.getElementById('toggle-countdown').checked,
+                        show_gallery: document.getElementById('toggle-gallery').checked,
+                        show_location: document.getElementById('toggle-location').checked,
+                        show_confirmation: document.getElementById('toggle-confirmation').checked,
+                        show_schedule: document.getElementById('toggle-schedule').checked,
+                        show_share: document.getElementById('toggle-share').checked
+                    }
+                };
+
+                await window.InvitationService.saveInvitation(payload, invitationId);
+
+                if (status === 'publicada') {
+                    await window.InvitationService.publishInvitation(invitationId);
+                    confetti({ particleCount: 100, spread: 70 });
+                    window.Utils.showToast('¡Invitación actualizada y publicada! 🎉', 'success');
+                } else {
+                    window.Utils.showToast('Cambios guardados correctamente.', 'success');
+                }
+
+                setTimeout(() => window.location.href = 'dashboard.html', 1200);
+            } catch (err) {
+                console.error(err);
+                window.Utils.showToast(err.message || 'Error al actualizar la invitación.', 'danger');
+            } finally {
+                window.Utils.setLoadingButton(btn, false);
+            }
+        }
+    </script>
+</body>
+</html>

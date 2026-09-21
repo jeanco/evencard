@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EvenCard — Crea invitaciones digitales interactivas para tus eventos especiales</title>
+    <meta name="description" content="Diseña, personaliza y comparte invitaciones digitales con galería de fotos, cuenta regresiva, confirmación por WhatsApp y mapa de ubicación.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="EvenCard — Plataforma de Invitaciones Digitales">
+    <meta property="og:description" content="Crea una invitación digital única para tu boda, cumpleaños, quinceañero o evento especial.">
+    <meta property="og:type" content="website">
+
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Estilos de EvenCard -->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+
+    <!-- NAVBAR FLOTANTE -->
+    <nav class="navbar navbar-expand-lg landing-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="index.html">
+                <div class="bg-primary text-white rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                    <i class="bi bi-envelope-heart-fill fs-5"></i>
+                </div>
+                <span class="fs-4 text-dark" style="letter-spacing: -0.5px;">Even<span class="text-primary">Card</span></span>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
+                    <li class="nav-item"><a class="nav-link text-secondary px-3" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary px-3" href="#como-funciona">Cómo funciona</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary px-3" href="#caracteristicas">Características</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary px-3" href="#plantillas">Plantillas</a></li>
+                    <li class="nav-item"><a class="nav-link text-secondary px-3" href="#faq">Preguntas</a></li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2" id="nav-auth-buttons">
+                    <a href="login.html" class="btn btn-light px-3 py-2">Iniciar sesión</a>
+                    <a href="registro.html" class="btn btn-primary px-3 py-2">Crear mi invitación</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="inicio">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 text-center text-lg-start">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 mb-3">
+                        <i class="bi bi-stars me-1"></i> La nueva forma de invitar a tus seres queridos
+                    </span>
+                    <h1 class="hero-title fw-extrabold text-dark mb-3">
+                        Crea una invitación digital única para tus <span class="text-gradient">momentos especiales</span>
+                    </h1>
+                    <p class="hero-subtitle mb-4">
+                        Diseña, personaliza y comparte tu invitación online en minutos. Agrega tus fotos, ubicación, fecha, galería y todos los detalles de tu evento.
+                    </p>
+
+                    <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3 mb-5">
+                        <a href="registro.html" class="btn btn-primary btn-lg px-4 py-3 shadow-lg">
+                            <i class="bi bi-magic me-2"></i> Crear mi invitación
+                        </a>
+                        <a href="#como-funciona" class="btn btn-light btn-lg px-4 py-3">
+                            <i class="bi bi-play-circle me-2 text-primary"></i> Ver cómo funciona
+                        </a>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-4 text-muted small">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-success fs-5"></i> Sin aplicaciones que descargar
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-whatsapp text-success fs-5"></i> 100% compatible con WhatsApp
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MOCKUP SMARTPHONE 3D CON INVITACIÓN EN VIVO -->
+                <div class="col-lg-6">
+                    <div class="phone-mockup-wrapper">
+                        <!-- Badge flotante 1 -->
+                        <div class="floating-badge badge-top-left">
+                            <div class="bg-success text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-whatsapp fs-5"></i>
+                            </div>
+                            <div>
+                                <span class="d-block fw-bold text-dark small">Confirmación instantánea</span>
+                                <span class="text-muted small">98 invitados confirmados</span>
+                            </div>
+                        </div>
+
+                        <!-- Badge flotante 2 -->
+                        <div class="floating-badge badge-bottom-right">
+                            <div class="bg-warning text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="bi bi-clock-history fs-5"></i>
+                            </div>
+                            <div>
+                                <span class="d-block fw-bold text-dark small">Cuenta regresiva</span>
+                                <span class="text-muted small">Faltan 14 días y 8 hrs</span>
+                            </div>
+                        </div>
+
+                        <!-- Teléfono Móvil -->
+                        <div class="phone-mockup">
+                            <div class="phone-screen shadow-inner">
+                                <div class="phone-notch"></div>
+                                
+                                <!-- Simulación de invitación dentro de la pantalla -->
+                                <div class="position-relative" style="height: 220px;">
+                                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" class="w-100 h-100 object-fit-cover" alt="Boda de Sofía y Mateo">
+                                    <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-gradient-to-t text-white text-center" style="background: linear-gradient(180deg, transparent, rgba(0,0,0,0.8));">
+                                        <span class="badge bg-white text-dark rounded-pill px-2 py-1 small mb-1">¡Nos Casamos!</span>
+                                        <h5 class="fw-bold mb-0">Sofía & Mateo</h5>
+                                        <p class="small mb-0 opacity-75">Sábado, 28 de Noviembre 2026</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-3">
+                                    <!-- Countdown simulation -->
+                                    <div class="d-flex justify-content-between gap-1 text-center mb-3">
+                                        <div class="bg-light p-2 rounded-2 flex-grow-1"><strong class="d-block text-primary">28</strong><span style="font-size: 10px;" class="text-muted">DÍAS</span></div>
+                                        <div class="bg-light p-2 rounded-2 flex-grow-1"><strong class="d-block text-primary">14</strong><span style="font-size: 10px;" class="text-muted">HORAS</span></div>
+                                        <div class="bg-light p-2 rounded-2 flex-grow-1"><strong class="d-block text-primary">45</strong><span style="font-size: 10px;" class="text-muted">MIN</span></div>
+                                        <div class="bg-light p-2 rounded-2 flex-grow-1"><strong class="d-block text-primary">12</strong><span style="font-size: 10px;" class="text-muted">SEG</span></div>
+                                    </div>
+
+                                    <!-- Location preview -->
+                                    <div class="card p-2 border-0 bg-light rounded-3 mb-2 d-flex flex-row align-items-center gap-2">
+                                        <i class="bi bi-geo-alt-fill text-danger fs-4"></i>
+                                        <div class="small">
+                                            <strong class="d-block text-dark">Hacienda Las Rosas</strong>
+                                            <span class="text-muted" style="font-size: 11px;">Av. Las Flores 450, Lima</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- WhatsApp CTA inside phone -->
+                                    <button class="btn btn-success btn-sm w-100 rounded-pill py-2 fw-semibold">
+                                        <i class="bi bi-whatsapp me-1"></i> Confirmar Asistencia
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: CÓMO FUNCIONA -->
+    <section class="py-5 bg-white border-top border-bottom" id="como-funciona">
+        <div class="container py-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 mb-2">Fácil y Rápido</span>
+                <h2 class="display-6 fw-bold text-dark">¿Cómo funciona EvenCard?</h2>
+                <p class="text-secondary">En solo 3 sencillos pasos tendrás tu invitación digital lista para compartir con todo el mundo.</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Paso 1 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 p-4 rounded-4 shadow-sm text-center">
+                        <div class="step-number mx-auto">1</div>
+                        <h4 class="fw-bold text-dark mb-2">Personaliza</h4>
+                        <p class="text-secondary mb-0">
+                            Agrega los datos de tu evento: fecha, hora, homenajeados, dirección con mapa interactivo y fotografías especiales.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 p-4 rounded-4 shadow-sm text-center">
+                        <div class="step-number mx-auto">2</div>
+                        <h4 class="fw-bold text-dark mb-2">Diseña</h4>
+                        <p class="text-secondary mb-0">
+                            Elige entre nuestras plantillas seleccionadas (Elegante, Romántica, Moderna, Floral o Minimalista) y ajusta la paleta de colores.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 p-4 rounded-4 shadow-sm text-center">
+                        <div class="step-number mx-auto">3</div>
+                        <h4 class="fw-bold text-dark mb-2">Comparte</h4>
+                        <p class="text-secondary mb-0">
+                            Obtén tu enlace web exclusivo y compártelo al instante por WhatsApp, redes sociales o mediante un código QR dinámico.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: CARACTERÍSTICAS -->
+    <section class="py-5 bg-light" id="caracteristicas">
+        <div class="container py-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 mb-2">Todo lo que necesitas</span>
+                <h2 class="display-6 fw-bold text-dark">Funcionalidades pensadas para deslumbrar</h2>
+                <p class="text-secondary">Una invitación tradicional en papel no puede hacer nada de esto. Da el salto al formato digital interactivo.</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Card 1 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100">
+                        <div class="feature-icon-wrap bg-primary-subtle text-primary">
+                            <i class="bi bi-calendar-event"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Información del evento</h5>
+                        <p class="text-secondary small mb-0">Detalla fecha, horarios, cronograma de actividades y nombres de familiares o padrinos.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100">
+                        <div class="feature-icon-wrap bg-success-subtle text-success">
+                            <i class="bi bi-images"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Galería de fotos</h5>
+                        <p class="text-secondary small mb-0">Sube múltiples fotografías en alta resolución con visor interactivo en pantalla completa.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100">
+                        <div class="feature-icon-wrap bg-danger-subtle text-danger">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Ubicación con mapa</h5>
+                        <p class="text-secondary small mb-0">Integración con OpenStreetMap, Google Maps y Waze para que tus invitados lleguen sin perderse.</p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100">
+                        <div class="feature-icon-wrap bg-warning-subtle text-warning">
+                            <i class="bi bi-hourglass-split"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Cuenta regresiva</h5>
+                        <p class="text-secondary small mb-0">Genera expectativa con un reloj interactivo en tiempo real que descuenta los días y minutos para el gran día.</p>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100">
+                        <div class="feature-icon-wrap bg-success-subtle text-success">
+                            <i class="bi bi-whatsapp"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Confirmación por WhatsApp</h5>
+                        <p class="text-secondary small mb-0">Botón directo para confirmar asistencia con un mensaje pre-redactado sin guardar números en la agenda.</p>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100">
+                        <div class="feature-icon-wrap bg-info-subtle text-info">
+                            <i class="bi bi-share"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Compartir en 1 clic</h5>
+                        <p class="text-secondary small mb-0">Comparte tu URL pública por WhatsApp, Facebook, correo electrónico o mediante enlace directo.</p>
+                    </div>
+                </div>
+
+                <!-- Card 7 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100">
+                        <div class="feature-icon-wrap bg-primary-subtle text-primary">
+                            <i class="bi bi-music-note-beamed"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Música de fondo</h5>
+                        <p class="text-secondary small mb-0">Acompaña la experiencia de tus invitados con su canción favorita de fondo mientras leen la invitación.</p>
+                    </div>
+                </div>
+
+                <!-- Card 8 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100">
+                        <div class="feature-icon-wrap bg-warning-subtle text-warning">
+                            <i class="bi bi-qr-code"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Código QR automático</h5>
+                        <p class="text-secondary small mb-0">Descarga el código QR para imprimirlo en souvenirs o proyectarlo en la entrada del salón.</p>
+                    </div>
+                </div>
+
+                <!-- Card 9 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card h-100">
+                        <div class="feature-icon-wrap bg-secondary-subtle text-dark">
+                            <i class="bi bi-phone"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">100% Responsive Mobile</h5>
+                        <p class="text-secondary small mb-0">Diseñado primero para celulares, optimizado para cargar a la velocidad de la luz en cualquier conexión.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: PLANTILLAS -->
+    <section class="py-5 bg-white" id="plantillas">
+        <div class="container py-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 mb-2">Estilos Únicos</span>
+                <h2 class="display-6 fw-bold text-dark">Plantillas para cada ocasión</h2>
+                <p class="text-secondary">Diseños cuidadosamente elaborados para reflejar la emoción y personalidad de tu celebración.</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Boda -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card template-card shadow-sm border-0">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80" alt="Boda">
+                        <div class="card-body p-3">
+                            <span class="badge bg-danger-subtle text-danger mb-1">Bodas</span>
+                            <h6 class="fw-bold mb-1">Elegante Dorado</h6>
+                            <p class="text-muted small mb-0">Tipografía clásica y detalles finos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cumpleaños -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card template-card shadow-sm border-0">
+                        <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=500&q=80" alt="Cumpleaños">
+                        <div class="card-body p-3">
+                            <span class="badge bg-warning-subtle text-warning mb-1">Cumpleaños</span>
+                            <h6 class="fw-bold mb-1">Fiesta Moderna</h6>
+                            <p class="text-muted small mb-0">Vibrante, alegre y colorido.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quince Años -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card template-card shadow-sm border-0">
+                        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=500&q=80" alt="Quince Años">
+                        <div class="card-body p-3">
+                            <span class="badge bg-info-subtle text-info mb-1">Quince Años</span>
+                            <h6 class="fw-bold mb-1">Romántica Pastel</h6>
+                            <p class="text-muted small mb-0">Tonos rubor y fuentes caligráficas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bautizo -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card template-card shadow-sm border-0">
+                        <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=500&q=80" alt="Bautizo">
+                        <div class="card-body p-3">
+                            <span class="badge bg-success-subtle text-success mb-1">Bautizo & Baby</span>
+                            <h6 class="fw-bold mb-1">Floral Botánico</h6>
+                            <p class="text-muted small mb-0">Suave, orgánico y celestial.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: PREGUNTAS FRECUENTES (FAQ) -->
+    <section class="py-5 bg-light" id="faq">
+        <div class="container py-4">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 mb-2">Dudas habituales</span>
+                <h2 class="display-6 fw-bold text-dark">Preguntas Frecuentes</h2>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion accordion-flush bg-white rounded-4 p-3 shadow-sm" id="faqAccordion">
+                        <div class="accordion-item border-0 mb-2">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button fw-bold text-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    ¿Mis invitados necesitan instalar alguna app para ver la invitación?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-secondary">
+                                    No, absolutamente nada. Las invitaciones son páginas web interactivas que abren directamente en el navegador del teléfono de cualquier persona al hacer clic en el enlace.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item border-0 mb-2">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button fw-bold text-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    ¿Cómo funciona la confirmación por WhatsApp?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-secondary">
+                                    La invitación incluye un botón que abre WhatsApp directamente con un mensaje automático ("¡Hola! Confirmo mi asistencia al evento...") listo para ser enviado a tu número telefónico.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button fw-bold text-dark collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    ¿Puedo editar los datos de mi invitación después de publicarla?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-secondary">
+                                    ¡Sí! Desde tu panel de control puedes modificar fechas, fotos, horarios o ubicación en cualquier momento y los cambios se reflejarán instantáneamente en el mismo enlace.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BANNER CTA FINAL -->
+    <section class="py-5 bg-white">
+        <div class="container py-4">
+            <div class="cta-banner text-center">
+                <h2 class="display-5 fw-bold mb-3">Crea hoy tu invitación digital</h2>
+                <p class="fs-5 opacity-90 max-w-700 mx-auto mb-4">
+                    Sorprende a tus invitados con una experiencia moderna, elegante y memorable para tu gran día.
+                </p>
+                <a href="registro.html" class="btn btn-light btn-lg px-5 py-3 fw-bold text-primary shadow-lg rounded-pill">
+                    Empezar ahora gratis <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark text-white py-5 border-top border-secondary border-opacity-25">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="bg-primary text-white rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                            <i class="bi bi-envelope-heart-fill"></i>
+                        </div>
+                        <span class="fs-4 fw-bold">Even<span class="text-primary">Card</span></span>
+                    </div>
+                    <p class="text-secondary small mb-3">
+                        La plataforma líder en diseño y publicación de tarjetas de invitación digitales interactivas para bodas, cumpleaños y eventos memorables.
+                    </p>
+                    <span class="text-secondary small">&copy; 2026 EvenCard. Todos los derechos reservados.</span>
+                </div>
+
+                <div class="col-6 col-lg-2 offset-lg-2">
+                    <h6 class="fw-bold text-white mb-3">Navegación</h6>
+                    <ul class="list-unstyled small text-secondary">
+                        <li class="mb-2"><a href="#inicio" class="text-decoration-none text-secondary">Inicio</a></li>
+                        <li class="mb-2"><a href="#caracteristicas" class="text-decoration-none text-secondary">Características</a></li>
+                        <li class="mb-2"><a href="#plantillas" class="text-decoration-none text-secondary">Plantillas</a></li>
+                        <li class="mb-2"><a href="#faq" class="text-decoration-none text-secondary">Preguntas frecuentes</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold text-white mb-3">Cuenta</h6>
+                    <ul class="list-unstyled small text-secondary">
+                        <li class="mb-2"><a href="login.html" class="text-decoration-none text-secondary">Iniciar sesión</a></li>
+                        <li class="mb-2"><a href="registro.html" class="text-decoration-none text-secondary">Crear cuenta</a></li>
+                        <li class="mb-2"><a href="dashboard.html" class="text-decoration-none text-secondary">Mi panel</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2">
+                    <h6 class="fw-bold text-white mb-3">Legal</h6>
+                    <ul class="list-unstyled small text-secondary">
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-secondary">Términos de servicio</a></li>
+                        <li class="mb-2"><a href="#" class="text-decoration-none text-secondary">Privacidad</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        // Actualizar navbar si el usuario ya tiene sesión iniciada
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await window.Auth.getCurrentUser();
+            if (user) {
+                const navAuth = document.getElementById('nav-auth-buttons');
+                if (navAuth) {
+                    navAuth.innerHTML = `
+                        <a href="dashboard.html" class="btn btn-primary px-4 py-2">
+                            <i class="bi bi-speedometer2 me-1"></i> Ir al Dashboard
+                        </a>
+                    `;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

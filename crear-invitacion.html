@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Invitación — EvenCard</title>
+
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Leaflet CSS (Mapa interactivo OpenStreetMap) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Estilos de EvenCard -->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="bg-light">
+
+    <!-- NAVBAR DEL WIZARD -->
+    <header class="dashboard-navbar shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="dashboard.html">
+                <div class="bg-primary text-white rounded-3 p-1 d-flex align-items-center justify-content-center" style="width: 34px; height: 34px;">
+                    <i class="bi bi-envelope-heart-fill"></i>
+                </div>
+                <span class="fs-4 text-dark">Even<span class="text-primary">Card</span></span>
+            </a>
+
+            <div class="d-flex align-items-center gap-2">
+                <a href="dashboard.html" class="btn btn-sm btn-light">
+                    <i class="bi bi-x-lg me-1"></i> Cancelar
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-4 wizard-wrapper">
+        <!-- Indicador de Pasos del Wizard -->
+        <div class="wizard-steps-nav mb-4" id="wizard-nav">
+            <div class="wizard-step-item active" data-step="1">
+                <div class="wizard-step-circle"><i class="bi bi-tag"></i></div>
+                <span class="wizard-step-label">1. Tipo</span>
+            </div>
+            <div class="wizard-step-item" data-step="2">
+                <div class="wizard-step-circle"><i class="bi bi-info-circle"></i></div>
+                <span class="wizard-step-label">2. Datos</span>
+            </div>
+            <div class="wizard-step-item" data-step="3">
+                <div class="wizard-step-circle"><i class="bi bi-geo-alt"></i></div>
+                <span class="wizard-step-label">3. Lugar</span>
+            </div>
+            <div class="wizard-step-item" data-step="4">
+                <div class="wizard-step-circle"><i class="bi bi-image"></i></div>
+                <span class="wizard-step-label">4. Portada</span>
+            </div>
+            <div class="wizard-step-item" data-step="5">
+                <div class="wizard-step-circle"><i class="bi bi-images"></i></div>
+                <span class="wizard-step-label">5. Galería</span>
+            </div>
+            <div class="wizard-step-item" data-step="6">
+                <div class="wizard-step-circle"><i class="bi bi-palette"></i></div>
+                <span class="wizard-step-label">6. Diseño</span>
+            </div>
+            <div class="wizard-step-item" data-step="7">
+                <div class="wizard-step-circle"><i class="bi bi-send-check"></i></div>
+                <span class="wizard-step-label">7. Publicar</span>
+            </div>
+        </div>
+
+        <form id="wizard-form" novalidate>
+            <!-- ============================================================== -->
+            <!-- PASO 1: TIPO DE EVENTO -->
+            <!-- ============================================================== -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5" id="step-panel-1">
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold text-dark mb-1">¿Qué tipo de evento estás planeando?</h3>
+                    <p class="text-secondary small">Selecciona una categoría para adaptar los campos de tu invitación.</p>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-4">
+                        <div class="event-type-card selected" data-type="boda">
+                            <i class="bi bi-heart-fill event-type-icon text-danger"></i>
+                            <h6 class="fw-bold mb-1">Boda</h6>
+                            <span class="text-muted small">Matrimonio civil o religioso</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="event-type-card" data-type="cumpleanos">
+                            <i class="bi bi-cake2-fill event-type-icon text-warning"></i>
+                            <h6 class="fw-bold mb-1">Cumpleaños</h6>
+                            <span class="text-muted small">Niños, adultos y aniversarios</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="event-type-card" data-type="quince_anos">
+                            <i class="bi bi-gem event-type-icon text-info"></i>
+                            <h6 class="fw-bold mb-1">Quince Años</h6>
+                            <span class="text-muted small">Celebración de 15 primaveras</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="event-type-card" data-type="bautizo">
+                            <i class="bi bi-droplet-fill event-type-icon text-primary"></i>
+                            <h6 class="fw-bold mb-1">Bautizo</h6>
+                            <span class="text-muted small">Ceremonia de bautizo</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="event-type-card" data-type="baby_shower">
+                            <i class="bi bi-balloon-heart-fill event-type-icon text-pink" style="color: #ec4899;"></i>
+                            <h6 class="fw-bold mb-1">Baby Shower</h6>
+                            <span class="text-muted small">Bienvenida del nuevo bebé</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="event-type-card" data-type="primera_comunion">
+                            <i class="bi bi-sun-fill event-type-icon text-warning"></i>
+                            <h6 class="fw-bold mb-1">Primera Comunión</h6>
+                            <span class="text-muted small">Celebración religiosa</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="event-type-card" data-type="aniversario">
+                            <i class="bi bi-stars event-type-icon text-purple" style="color: #8b5cf6;"></i>
+                            <h6 class="fw-bold mb-1">Aniversario</h6>
+                            <span class="text-muted small">Bodas de plata, oro o pareja</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="event-type-card" data-type="empresarial">
+                            <i class="bi bi-briefcase-fill event-type-icon text-secondary"></i>
+                            <h6 class="fw-bold mb-1">Empresarial</h6>
+                            <span class="text-muted small">Conferencias y fiestas de gala</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="event-type-card" data-type="otro">
+                            <i class="bi bi-calendar-event-fill event-type-icon text-primary"></i>
+                            <h6 class="fw-bold mb-1">Otro Evento</h6>
+                            <span class="text-muted small">Graduaciones, reencuentros</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary px-4 py-2" onclick="nextStep(2)">
+                        Continuar <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- PASO 2: INFORMACIÓN PRINCIPAL -->
+            <!-- ============================================================== -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-2">
+                <div class="mb-4">
+                    <h3 class="fw-bold text-dark mb-1">Información principal del evento</h3>
+                    <p class="text-secondary small">Indica el título, fecha, hora y protagonistas.</p>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="event-title">Nombre del evento <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-lg" id="event-title" placeholder="Ej: Boda de Sofía & Mateo" required>
+                    <div class="form-text">Este título se mostrará en el encabezado principal de la invitación.</div>
+                </div>
+
+                <!-- Campos dinámicos según el tipo de evento -->
+                <div id="dynamic-people-fields" class="p-3 bg-light rounded-4 mb-3 border">
+                    <h6 class="fw-bold text-dark mb-3"><i class="bi bi-people-fill text-primary me-2"></i>Protagonistas y Familiares</h6>
+                    <div class="row g-3" id="people-inputs-container"></div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="event-date">Fecha del evento <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="event-date" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="event-time">Hora del evento <span class="text-danger">*</span></label>
+                        <input type="time" class="form-control" id="event-time" required>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label" for="event-description">Mensaje o dedicatoria</label>
+                    <textarea class="form-control" id="event-description" rows="3" placeholder="Unas palabras especiales para tus invitados (Ej: Con la bendición de Dios y nuestros padres...)"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="prevStep(1)">
+                        <i class="bi bi-arrow-left me-1"></i> Anterior
+                    </button>
+                    <button type="button" class="btn btn-primary px-4" onclick="validateStep2()">
+                        Continuar <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- PASO 3: UBICACIÓN -->
+            <!-- ============================================================== -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-3">
+                <div class="mb-4">
+                    <h3 class="fw-bold text-dark mb-1">¿Dónde se celebrará el evento?</h3>
+                    <p class="text-secondary small">Registra la dirección y fija la ubicación en el mapa interactivo.</p>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="loc-name">Nombre del lugar o local <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="loc-name" placeholder="Ej: Hacienda Santa María / Parroquia San José">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="loc-address">Dirección completa <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="loc-address" placeholder="Ej: Av. Las Palmeras 123, Miraflores">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="loc-reference">Referencia de llegada</label>
+                    <input type="text" class="form-control" id="loc-reference" placeholder="Ej: Frente al parque central, altura del km 15">
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label d-flex justify-content-between">
+                        <span><i class="bi bi-pin-map text-danger me-1"></i> Ubicación en el Mapa (Haz clic para colocar el pin)</span>
+                        <span class="small text-muted" id="coords-display">Lat: -, Lng: -</span>
+                    </label>
+                    <div id="map-picker" class="shadow-sm"></div>
+                    <input type="hidden" id="loc-lat">
+                    <input type="hidden" id="loc-lng">
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="prevStep(2)">
+                        <i class="bi bi-arrow-left me-1"></i> Anterior
+                    </button>
+                    <button type="button" class="btn btn-primary px-4" onclick="nextStep(4)">
+                        Continuar <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- PASO 4: PORTADA Y MEDIOS -->
+            <!-- ============================================================== -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-4">
+                <div class="mb-4">
+                    <h3 class="fw-bold text-dark mb-1">Imagen de portada del evento</h3>
+                    <p class="text-secondary small">La fotografía principal que verán tus invitados al abrir el enlace.</p>
+                </div>
+
+                <!-- Dropzone de Portada Principal -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Fotografía principal (Portada) <span class="text-danger">*</span></label>
+                    <div class="dropzone-box" id="cover-dropzone" onclick="document.getElementById('cover-file-input').click()">
+                        <div id="cover-dropzone-content">
+                            <i class="bi bi-cloud-arrow-up-fill fs-1 text-primary mb-2 d-block"></i>
+                            <h6 class="fw-bold mb-1">Arrastra tu imagen aquí o haz clic para seleccionar</h6>
+                            <span class="text-muted small">Formatos permitidos: JPG, PNG, WEBP (Máx. 5MB)</span>
+                        </div>
+                        <div id="cover-preview-wrapper" class="d-none position-relative">
+                            <img id="cover-preview-img" src="" class="img-fluid rounded-3 shadow-sm object-fit-cover" style="max-height: 240px; width: 100%;">
+                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle" onclick="removeCoverImage(event)">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <input type="file" id="cover-file-input" class="d-none" accept="image/*">
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="prevStep(3)">
+                        <i class="bi bi-arrow-left me-1"></i> Anterior
+                    </button>
+                    <button type="button" class="btn btn-primary px-4" onclick="nextStep(5)">
+                        Continuar <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- PASO 5: GALERÍA DE FOTOS -->
+            <!-- ============================================================== -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h3 class="fw-bold text-dark mb-1">Galería fotográfica</h3>
+                        <p class="text-secondary small mb-0">Sube varias fotos de los agasajados o momentos especiales.</p>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" onclick="document.getElementById('gallery-file-input').click()">
+                        <i class="bi bi-plus-lg me-1"></i> Agregar fotos
+                    </button>
+                    <input type="file" id="gallery-file-input" class="d-none" accept="image/*" multiple>
+                </div>
+
+                <!-- Grid de Fotos -->
+                <div class="row g-3 mb-4" id="gallery-preview-container">
+                    <div class="col-12 text-center py-5 text-muted border border-dashed rounded-3">
+                        <i class="bi bi-images fs-1 text-secondary opacity-50 mb-2 d-block"></i>
+                        <p class="mb-0">No hay fotos en la galería aún. Haz clic en "Agregar fotos".</p>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="prevStep(4)">
+                        <i class="bi bi-arrow-left me-1"></i> Anterior
+                    </button>
+                    <button type="button" class="btn btn-primary px-4" onclick="nextStep(6)">
+                        Continuar <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- PASO 6: DISEÑO Y PLANTILLAS -->
+            <!-- ============================================================== -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-6">
+                <div class="mb-4">
+                    <h3 class="fw-bold text-dark mb-1">Elige el estilo visual y secciones</h3>
+                    <p class="text-secondary small">Personaliza la plantilla y decide qué componentes mostrar.</p>
+                </div>
+
+                <!-- Selector de Plantilla -->
+                <label class="form-label fw-bold mb-2">Plantilla de diseño</label>
+                <div class="row g-3 mb-4">
+                    <!-- Elegante -->
+                    <div class="col-6 col-md-4">
+                        <div class="template-option-card selected" data-template="elegante">
+                            <div class="template-swatch" style="background: linear-gradient(135deg, #FAF8F5 0%, #E8DFD1 100%); color: #2D2A26;">
+                                <span class="font-serif">Elegante</span>
+                            </div>
+                            <div class="p-2 text-center">
+                                <small class="fw-bold text-dark d-block">Elegante & Oro</small>
+                                <span class="text-muted" style="font-size: 11px;">Clásico y formal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Romántica -->
+                    <div class="col-6 col-md-4">
+                        <div class="template-option-card" data-template="romantica">
+                            <div class="template-swatch" style="background: linear-gradient(135deg, #FFF0F3 0%, #FAD2E1 100%); color: #B25068;">
+                                <span>Romántica</span>
+                            </div>
+                            <div class="p-2 text-center">
+                                <small class="fw-bold text-dark d-block">Romántica Pastel</small>
+                                <span class="text-muted" style="font-size: 11px;">Suave y floral</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Moderna -->
+                    <div class="col-6 col-md-4">
+                        <div class="template-option-card" data-template="moderna">
+                            <div class="template-swatch" style="background: linear-gradient(135deg, #111827 0%, #312E81 100%); color: #818CF8;">
+                                <span>Moderna</span>
+                            </div>
+                            <div class="p-2 text-center">
+                                <small class="fw-bold text-dark d-block">Moderna Neón</small>
+                                <span class="text-muted" style="font-size: 11px;">Estilo nocturno SaaS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floral -->
+                    <div class="col-6 col-md-4">
+                        <div class="template-option-card" data-template="floral">
+                            <div class="template-swatch" style="background: linear-gradient(135deg, #EFF4EF 0%, #D1DDD1 100%); color: #2B4C33;">
+                                <span>Floral</span>
+                            </div>
+                            <div class="p-2 text-center">
+                                <small class="fw-bold text-dark d-block">Floral Salvia</small>
+                                <span class="text-muted" style="font-size: 11px;">Botánico y natural</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Minimalista -->
+                    <div class="col-6 col-md-4">
+                        <div class="template-option-card" data-template="minimalista">
+                            <div class="template-swatch" style="background: linear-gradient(135deg, #FFFFFF 0%, #E5E5E5 100%); color: #000000; border-bottom: 1px solid #ddd;">
+                                <span class="fw-bold">MINIMAL</span>
+                            </div>
+                            <div class="p-2 text-center">
+                                <small class="fw-bold text-dark d-block">Minimalista B&N</small>
+                                <span class="text-muted" style="font-size: 11px;">Editorial y moderno</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toggles de Componentes Visibles -->
+                <h5 class="fw-bold text-dark mb-3">Módulos visibles en la invitación</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch p-3 bg-light rounded-3">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-countdown" checked>
+                            <label class="form-check-label fw-semibold" for="toggle-countdown">Cuenta regresiva</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch p-3 bg-light rounded-3">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-gallery" checked>
+                            <label class="form-check-label fw-semibold" for="toggle-gallery">Galería de fotos</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch p-3 bg-light rounded-3">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-location" checked>
+                            <label class="form-check-label fw-semibold" for="toggle-location">Mapa y ubicación</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch p-3 bg-light rounded-3">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-confirmation" checked>
+                            <label class="form-check-label fw-semibold" for="toggle-confirmation">Confirmación por WhatsApp & RSVP</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch p-3 bg-light rounded-3">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-schedule" checked>
+                            <label class="form-check-label fw-semibold" for="toggle-schedule">Cronograma de actividades</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch p-3 bg-light rounded-3">
+                            <input class="form-check-input ms-0 me-3" type="checkbox" id="toggle-share" checked>
+                            <label class="form-check-label fw-semibold" for="toggle-share">Botones para compartir y QR</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cronograma dinámico -->
+                <div class="p-3 bg-light rounded-4 mb-4 border" id="schedule-box">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold text-dark mb-0"><i class="bi bi-clock-history text-primary me-2"></i>Itinerario del Evento (Opcional)</h6>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="addScheduleItem()">
+                            <i class="bi bi-plus-lg"></i> Agregar actividad
+                        </button>
+                    </div>
+                    <div id="schedule-items-container"></div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-light px-4" onclick="prevStep(5)">
+                        <i class="bi bi-arrow-left me-1"></i> Anterior
+                    </button>
+                    <button type="button" class="btn btn-primary px-4" onclick="nextStep(7)">
+                        Continuar <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- PASO 7: VISTA PREVIA Y PUBLICACIÓN -->
+            <!-- ============================================================== -->
+            <div class="wizard-step-panel card border-0 shadow-sm rounded-4 p-4 p-md-5 d-none" id="step-panel-7">
+                <div class="text-center mb-4">
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 mb-2">Paso Final</span>
+                    <h3 class="fw-bold text-dark mb-1">¡Casi listo! Revisa y publica</h3>
+                    <p class="text-secondary small">Personaliza tu enlace web único antes de compartirlo.</p>
+                </div>
+
+                <!-- Slug Personalizado -->
+                <div class="card p-3 border-0 bg-light rounded-4 mb-4">
+                    <label class="form-label fw-bold text-dark mb-1">Tu enlace personalizado:</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white text-muted border-end-0" id="base-url-display">evencard.test/vista-invitacion.html?slug=</span>
+                        <input type="text" class="form-control border-start-0 fw-bold text-primary" id="invitation-slug" required>
+                    </div>
+                    <div class="form-text">Solo letras minúsculas, números y guiones.</div>
+                </div>
+
+                <!-- Resumen rápido de la invitación -->
+                <div class="card p-4 border rounded-4 mb-4 bg-white">
+                    <h5 class="fw-bold text-dark mb-3" id="summary-title">Boda de Sofía & Mateo</h5>
+                    <div class="row g-2 text-secondary small">
+                        <div class="col-sm-6">
+                            <i class="bi bi-calendar-check text-primary me-1"></i> <span id="summary-date">28 Nov 2026</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="bi bi-clock text-primary me-1"></i> <span id="summary-time">17:00 PM</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="bi bi-geo-alt text-primary me-1"></i> <span id="summary-place">Lugar del evento</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="bi bi-palette text-primary me-1"></i> Plantilla: <span id="summary-template" class="text-capitalize">Elegante</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="d-flex flex-column flex-sm-row justify-content-between gap-3">
+                    <button type="button" class="btn btn-light px-4 py-3" onclick="prevStep(6)">
+                        <i class="bi bi-arrow-left me-1"></i> Anterior
+                    </button>
+
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary px-4 py-3" id="btn-save-draft" onclick="submitInvitation('borrador')">
+                            <i class="bi bi-save me-1"></i> Guardar Borrador
+                        </button>
+                        <button type="button" class="btn btn-primary px-5 py-3 shadow-lg" id="btn-publish" onclick="submitInvitation('publicada')">
+                            <i class="bi bi-rocket-takeoff-fill me-2"></i> Publicar Invitación
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <!-- Canvas Confetti & Leaflet Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <!-- Scripts de la Aplicación -->
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/invitation.js"></script>
+
+    <script>
+        let currentStep = 1;
+        let selectedEventType = 'boda';
+        let selectedTemplate = 'elegante';
+        let coverFile = null;
+        let coverUrl = '';
+        let mapInstance = null;
+        let mapMarker = null;
+        window.galleryManager = new GalleryManager('gallery-preview-container');
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await window.Auth.requireAuth('login.html');
+            if (!user) return;
+
+            initEventTypeCards();
+            initTemplateCards();
+            updateDynamicPeopleFields(selectedEventType);
+            initCoverUpload();
+            initGalleryUpload();
+
+            // Set base URL label
+            document.getElementById('base-url-display').textContent = window.CONFIG.PUBLIC_INVITATION_BASE_URL;
+
+            // Auto-slug listener
+            document.getElementById('event-title').addEventListener('input', (e) => {
+                const slugInput = document.getElementById('invitation-slug');
+                if (!slugInput.dataset.manual) {
+                    slugInput.value = window.Utils.generateSlug(e.target.value);
+                }
+            });
+
+            document.getElementById('invitation-slug').addEventListener('input', (e) => {
+                e.target.dataset.manual = 'true';
+            });
+        });
+
+        // 1. Selector de Tipo de Evento
+        function initEventTypeCards() {
+            document.querySelectorAll('.event-type-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.event-type-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedEventType = card.dataset.type;
+                    updateDynamicPeopleFields(selectedEventType);
+                });
+            });
+        }
+
+        function updateDynamicPeopleFields(type) {
+            const container = document.getElementById('people-inputs-container');
+            if (!container) return;
+
+            if (type === 'boda') {
+                container.innerHTML = `
+                    <div class="col-md-6">
+                        <label class="form-label small">Nombre de la novia</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="novia" placeholder="Ej: Sofía Martínez">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">Nombre del novio</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="novio" placeholder="Ej: Mateo Romero">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">Padres de la novia</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="padres_novia" placeholder="Ej: Carlos Martínez & Elena Soto">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">Padres del novio</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="padres_novio" placeholder="Ej: Fernando Romero & Lucía Vega">
+                    </div>
+                `;
+            } else if (type === 'quince_anos') {
+                container.innerHTML = `
+                    <div class="col-md-6">
+                        <label class="form-label small">Nombre de la Quinceañera</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="quinceanera" placeholder="Ej: Valentina Morales">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">Nombre de los Padres</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="padres" placeholder="Ej: Roberto Morales & Ana Torres">
+                    </div>
+                `;
+            } else if (type === 'bautizo' || type === 'baby_shower') {
+                container.innerHTML = `
+                    <div class="col-md-6">
+                        <label class="form-label small">Nombre del Bebé</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="bebe" placeholder="Ej: Santiago">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">Padres</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="padres" placeholder="Ej: Daniel & Patricia">
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label small">Padrinos</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="padrinos" placeholder="Ej: Gabriel Ríos & Mariana Gómez">
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="col-md-6">
+                        <label class="form-label small">Nombre del Agasajado / Homenajeado</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="agasajado" placeholder="Ej: Carlos Silva">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small">Anfitrión / Organizador</label>
+                        <input type="text" class="form-control form-control-sm person-input" data-type="anfitrion" placeholder="Ej: Familia Silva">
+                    </div>
+                `;
+            }
+        }
+
+        // 2. Selector de Plantilla
+        function initTemplateCards() {
+            document.querySelectorAll('.template-option-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.template-option-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedTemplate = card.dataset.template;
+                });
+            });
+        }
+
+        // 3. Subida de Portada
+        function initCoverUpload() {
+            const dropzone = document.getElementById('cover-dropzone');
+            const fileInput = document.getElementById('cover-file-input');
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) handleCoverFile(file);
+            });
+
+            ['dragenter', 'dragover'].forEach(name => {
+                dropzone.addEventListener(name, (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add('dragover');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(name => {
+                dropzone.addEventListener(name, (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove('dragover');
+                });
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const file = e.dataTransfer.files[0];
+                if (file) handleCoverFile(file);
+            });
+        }
+
+        function handleCoverFile(file) {
+            try {
+                window.Storage.validateFile(file);
+                coverFile = file;
+                const blobUrl = URL.createObjectURL(file);
+                document.getElementById('cover-preview-img').src = blobUrl;
+                document.getElementById('cover-dropzone-content').classList.add('d-none');
+                document.getElementById('cover-preview-wrapper').classList.remove('d-none');
+            } catch (err) {
+                window.Utils.showToast(err.message, 'warning');
+            }
+        }
+
+        function removeCoverImage(e) {
+            e.stopPropagation();
+            coverFile = null;
+            coverUrl = '';
+            document.getElementById('cover-file-input').value = '';
+            document.getElementById('cover-dropzone-content').classList.remove('d-none');
+            document.getElementById('cover-preview-wrapper').classList.add('d-none');
+        }
+
+        // 4. Galería Múltiple
+        function initGalleryUpload() {
+            const galleryInput = document.getElementById('gallery-file-input');
+            galleryInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    window.galleryManager.addFiles(e.target.files);
+                }
+            });
+        }
+
+        // 5. Cronograma
+        function addScheduleItem(time = '', title = '') {
+            const container = document.getElementById('schedule-items-container');
+            const div = document.createElement('div');
+            div.className = 'd-flex gap-2 align-items-center mb-2 schedule-row';
+            div.innerHTML = `
+                <input type="time" class="form-control form-control-sm schedule-time" style="max-width: 130px;" value="${time}">
+                <input type="text" class="form-control form-control-sm schedule-title flex-grow-1" placeholder="Ej: Ceremonia / Recepción / Cena" value="${title}">
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="this.parentElement.remove()">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
+            container.appendChild(div);
+        }
+
+        // 6. Mapa Interactivo Leaflet
+        function initMap() {
+            if (mapInstance) return;
+            const defaultLat = -12.046374;
+            const defaultLng = -77.042793;
+
+            mapInstance = L.map('map-picker').setView([defaultLat, defaultLng], 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }).addTo(mapInstance);
+
+            mapMarker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(mapInstance);
+
+            function updateMarkerPos(lat, lng) {
+                document.getElementById('loc-lat').value = lat;
+                document.getElementById('loc-lng').value = lng;
+                document.getElementById('coords-display').textContent = `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`;
+            }
+
+            updateMarkerPos(defaultLat, defaultLng);
+
+            mapMarker.on('dragend', (e) => {
+                const pos = e.target.getLatLng();
+                updateMarkerPos(pos.lat, pos.lng);
+            });
+
+            mapInstance.on('click', (e) => {
+                mapMarker.setLatLng(e.latlng);
+                updateMarkerPos(e.latlng.lat, e.latlng.lng);
+            });
+
+            setTimeout(() => mapInstance.invalidateSize(), 300);
+        }
+
+        // Navegación entre pasos
+        function showStep(step) {
+            document.querySelectorAll('.wizard-step-panel').forEach(p => p.classList.add('d-none'));
+            document.getElementById(`step-panel-${step}`).classList.remove('d-none');
+
+            document.querySelectorAll('.wizard-step-item').forEach(item => {
+                const itemStep = parseInt(item.dataset.step, 10);
+                if (itemStep === step) {
+                    item.classList.add('active');
+                    item.classList.remove('completed');
+                } else if (itemStep < step) {
+                    item.classList.remove('active');
+                    item.classList.add('completed');
+                } else {
+                    item.classList.remove('active', 'completed');
+                }
+            });
+
+            currentStep = step;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (step === 3) {
+                setTimeout(initMap, 200);
+            }
+
+            if (step === 7) {
+                updateSummary();
+            }
+        }
+
+        function nextStep(step) {
+            showStep(step);
+        }
+
+        function prevStep(step) {
+            showStep(step);
+        }
+
+        function validateStep2() {
+            const title = document.getElementById('event-title').value.trim();
+            const date = document.getElementById('event-date').value;
+            const time = document.getElementById('event-time').value;
+
+            if (!title) {
+                window.Utils.showToast('Ingresa el título del evento.', 'warning');
+                return;
+            }
+            if (!date) {
+                window.Utils.showToast('Selecciona la fecha del evento.', 'warning');
+                return;
+            }
+            if (!time) {
+                window.Utils.showToast('Selecciona la hora del evento.', 'warning');
+                return;
+            }
+            nextStep(3);
+        }
+
+        function updateSummary() {
+            document.getElementById('summary-title').textContent = document.getElementById('event-title').value || 'Sin título';
+            document.getElementById('summary-date').textContent = window.Utils.formatDate(document.getElementById('event-date').value);
+            document.getElementById('summary-time').textContent = window.Utils.formatTime(document.getElementById('event-time').value);
+            document.getElementById('summary-place').textContent = document.getElementById('loc-name').value || 'Lugar por definir';
+            document.getElementById('summary-template').textContent = selectedTemplate;
+        }
+
+        // Guardar o Publicar Invitación
+        async function submitInvitation(status = 'borrador') {
+            const title = document.getElementById('event-title').value.trim();
+            const slug = document.getElementById('invitation-slug').value.trim();
+            const eventDate = document.getElementById('event-date').value;
+            const eventTime = document.getElementById('event-time').value;
+
+            if (!title || !slug || !eventDate) {
+                window.Utils.showToast('Por favor completa el título, fecha y slug de la invitación.', 'warning');
+                showStep(2);
+                return;
+            }
+
+            const btn = status === 'publicada' ? document.getElementById('btn-publish') : document.getElementById('btn-save-draft');
+
+            try {
+                window.Utils.setLoadingButton(btn, true, status === 'publicada' ? 'Publicando...' : 'Guardando...');
+
+                const tempId = 'inv_' + Date.now();
+
+                // 1. Subir portada a Supabase Storage si se seleccionó archivo
+                if (coverFile) {
+                    window.Utils.showToast('Subiendo foto de portada...', 'info');
+                    const coverUploaded = await window.Storage.uploadImage(
+                        window.CONFIG.BUCKETS.COVERS,
+                        coverFile,
+                        tempId
+                    );
+                    coverUrl = coverUploaded.publicUrl;
+                }
+
+                // 2. Subir galería pendiente
+                let galleryList = [];
+                if (window.galleryManager.getItems().length > 0) {
+                    window.Utils.showToast('Subiendo galería de fotos...', 'info');
+                    galleryList = await window.galleryManager.uploadPending(tempId, (curr, total) => {
+                        window.Utils.showToast(`Subiendo fotos ${curr}/${total}...`, 'info');
+                    });
+                }
+
+                // 3. Recoger personas clave
+                const people = [];
+                document.querySelectorAll('.person-input').forEach(inp => {
+                    if (inp.value.trim()) {
+                        people.push({
+                            type: inp.dataset.type,
+                            name: inp.value.trim(),
+                            role: inp.placeholder
+                        });
+                    }
+                });
+
+                // 4. Recoger cronograma
+                const schedule = [];
+                document.querySelectorAll('.schedule-row').forEach(row => {
+                    const timeVal = row.querySelector('.schedule-time').value;
+                    const titleVal = row.querySelector('.schedule-title').value.trim();
+                    if (titleVal) {
+                        schedule.push({
+                            event_time: timeVal || null,
+                            title: titleVal
+                        });
+                    }
+                });
+
+                // 5. Ubicación
+                const locationData = {
+                    place_name: document.getElementById('loc-name').value.trim(),
+                    address: document.getElementById('loc-address').value.trim(),
+                    reference: document.getElementById('loc-reference').value.trim(),
+                    latitude: document.getElementById('loc-lat').value || null,
+                    longitude: document.getElementById('loc-lng').value || null
+                };
+
+                // 6. Settings
+                const settingsData = {
+                    show_countdown: document.getElementById('toggle-countdown').checked,
+                    show_gallery: document.getElementById('toggle-gallery').checked,
+                    show_location: document.getElementById('toggle-location').checked,
+                    show_confirmation: document.getElementById('toggle-confirmation').checked,
+                    show_schedule: document.getElementById('toggle-schedule').checked,
+                    show_share: document.getElementById('toggle-share').checked
+                };
+
+                // 7. Payload final
+                const payload = {
+                    event_type: selectedEventType,
+                    title: title,
+                    slug: slug,
+                    status: status,
+                    description: document.getElementById('event-description').value.trim(),
+                    event_date: eventDate,
+                    event_time: eventTime,
+                    cover_image: coverUrl || 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
+                    template_id: selectedTemplate,
+                    people: people,
+                    location: locationData,
+                    gallery: galleryList,
+                    schedule: schedule,
+                    settings: settingsData
+                };
+
+                const savedId = await window.InvitationService.saveInvitation(payload, null);
+
+                if (status === 'publicada') {
+                    await window.InvitationService.publishInvitation(savedId);
+                    confetti({
+                        particleCount: 120,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                    window.Utils.showToast('¡Tu invitación ha sido publicada exitosamente! 🎉', 'success');
+                } else {
+                    window.Utils.showToast('Borrador guardado correctamente.', 'success');
+                }
+
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1400);
+
+            } catch (err) {
+                console.error('Error al guardar invitación:', err);
+                let msg = err.message || 'No se pudo guardar la invitación.';
+                if (msg.includes('slug') || msg.includes('unique')) {
+                    msg = 'El enlace personalizado ya está en uso. Por favor escribe otro diferente.';
+                }
+                window.Utils.showToast(msg, 'danger');
+            } finally {
+                window.Utils.setLoadingButton(btn, false);
+            }
+        }
+    </script>
+</body>
+</html>

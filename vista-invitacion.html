@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="meta-title">Invitación Especial — EvenCard</title>
+    <meta name="description" id="meta-description" content="Estás cordialmente invitado a nuestro evento especial. Revisa la ubicación, fecha y confirma tu asistencia.">
+
+    <!-- Open Graph dinámico -->
+    <meta property="og:title" id="og-title" content="Invitación Especial">
+    <meta property="og:description" id="og-description" content="Acompáñanos a celebrar este momento único.">
+    <meta property="og:image" id="og-image" content="">
+    <meta property="og:type" content="article">
+
+    <!-- Bootstrap 5 & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Estilos de EvenCard & Plantillas -->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/invitation.css">
+</head>
+<body class="invitation-body theme-elegante" id="invitation-body-root">
+
+    <!-- ESTADO DE CARGA -->
+    <div id="invitation-loading" class="min-vh-100 d-flex flex-column align-items-center justify-content-center bg-white p-4">
+        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Cargando invitación...</span>
+        </div>
+        <h5 class="fw-bold text-dark">Preparando tu invitación...</h5>
+        <span class="text-secondary small">Cargando detalles del evento</span>
+    </div>
+
+    <!-- ESTADO DE ERROR / NO ENCONTRADA -->
+    <div id="invitation-not-found" class="min-vh-100 d-none flex-column align-items-center justify-content-center bg-white p-4 text-center">
+        <div class="bg-danger-subtle text-danger rounded-circle p-3 mb-3 d-inline-flex">
+            <i class="bi bi-envelope-x fs-1"></i>
+        </div>
+        <h3 class="fw-bold text-dark mb-2">Invitación no disponible</h3>
+        <p class="text-secondary mb-4 max-w-500">
+            Esta invitación no existe o aún se encuentra en modo borrador. Comunícate con el anfitrión del evento.
+        </p>
+        <a href="index.html" class="btn btn-primary px-4 py-2">
+            <i class="bi bi-house me-1"></i> Ir al Inicio
+        </a>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL DE LA INVITACIÓN -->
+    <div id="invitation-content" class="invitation-wrapper d-none">
+        
+        <!-- 1. HERO Y PORTADA -->
+        <section class="invitation-hero">
+            <img id="inv-cover-img" src="" class="invitation-hero-img" alt="Portada de Invitación">
+            <div class="invitation-hero-overlay"></div>
+            <div class="invitation-hero-content">
+                <span class="badge bg-white text-dark rounded-pill px-3 py-1 mb-2 small shadow-sm" id="inv-badge-type">
+                    Nuestra Celebración
+                </span>
+                <h1 class="invitation-title display-5 fw-bold mb-2" id="inv-title">
+                    Sofía & Mateo
+                </h1>
+                <p class="fs-6 opacity-90 mb-0" id="inv-formatted-date">
+                    Sábado, 28 de Noviembre de 2026
+                </p>
+            </div>
+        </section>
+
+        <div class="p-4 p-md-5">
+            <!-- 2. MENSAJE / DEDICATORIA -->
+            <section class="text-center mb-5" id="section-message">
+                <div class="mb-3 text-muted opacity-50">
+                    <i class="bi bi-quote fs-1"></i>
+                </div>
+                <p class="fs-5 fst-italic px-3 mb-3" id="inv-description">
+                    "Hay momentos en la vida que son irrepetibles, pero compartirlos con las personas que más queremos los hace inolvidables."
+                </p>
+                <div class="mx-auto" style="width: 50px; height: 2px; background: currentColor; opacity: 0.3;"></div>
+            </section>
+
+            <!-- 3. CUENTA REGRESIVA -->
+            <section class="invitation-card p-4 text-center mb-5" id="section-countdown">
+                <h6 class="fw-bold text-uppercase tracking-wider small opacity-75 mb-3">
+                    <i class="bi bi-hourglass-split me-1"></i> Faltan muy pocos días
+                </h6>
+                <div class="countdown-grid">
+                    <div class="countdown-box rounded-3">
+                        <span class="countdown-number" id="cd-days">00</span>
+                        <span class="countdown-label">Días</span>
+                    </div>
+                    <div class="countdown-box rounded-3">
+                        <span class="countdown-number" id="cd-hours">00</span>
+                        <span class="countdown-label">Horas</span>
+                    </div>
+                    <div class="countdown-box rounded-3">
+                        <span class="countdown-number" id="cd-minutes">00</span>
+                        <span class="countdown-label">Min</span>
+                    </div>
+                    <div class="countdown-box rounded-3">
+                        <span class="countdown-number" id="cd-seconds">00</span>
+                        <span class="countdown-label">Seg</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. PROTAGONISTAS Y PADRES -->
+            <section class="mb-5 text-center" id="section-people">
+                <div class="invitation-card p-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-people-fill text-primary me-2"></i>Con la bendición de</h5>
+                    <div class="row g-3" id="inv-people-list"></div>
+                </div>
+            </section>
+
+            <!-- 5. CRONOGRAMA / ITINERARIO -->
+            <section class="mb-5" id="section-schedule">
+                <div class="invitation-card p-4">
+                    <h5 class="fw-bold text-center mb-4"><i class="bi bi-clock-history text-primary me-2"></i>Itinerario del Evento</h5>
+                    <div class="timeline-list ps-4" id="inv-schedule-list"></div>
+                </div>
+            </section>
+
+            <!-- 6. UBICACIÓN Y MAPA -->
+            <section class="mb-5" id="section-location">
+                <div class="invitation-card p-4">
+                    <h5 class="fw-bold text-center mb-3"><i class="bi bi-geo-alt-fill text-danger me-2"></i>Ubicación y Cómo Llegar</h5>
+                    <div class="text-center mb-3">
+                        <h6 class="fw-bold mb-1" id="inv-loc-place">Hacienda Las Flores</h6>
+                        <p class="text-secondary small mb-1" id="inv-loc-address">Av. Los Olivos 240</p>
+                        <span class="text-muted small fst-italic" id="inv-loc-ref"></span>
+                    </div>
+
+                    <!-- Contenedor del Mapa -->
+                    <div id="invitation-map" class="mb-3 shadow-sm"></div>
+
+                    <!-- Botones de Navegación Externa -->
+                    <div class="d-flex gap-2">
+                        <a id="btn-google-maps" href="#" target="_blank" class="btn btn-outline-danger btn-sm flex-grow-1 rounded-3 py-2 fw-semibold">
+                            <i class="bi bi-google me-1"></i> Abrir en Google Maps
+                        </a>
+                        <a id="btn-waze" href="#" target="_blank" class="btn btn-outline-primary btn-sm flex-grow-1 rounded-3 py-2 fw-semibold">
+                            <i class="bi bi-navigation-fill me-1"></i> Abrir en Waze
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. GALERÍA DE FOTOS -->
+            <section class="mb-5" id="section-gallery">
+                <div class="invitation-card p-4 text-center">
+                    <h5 class="fw-bold mb-1"><i class="bi bi-images text-primary me-2"></i>Nuestros Recuerdos</h5>
+                    <p class="text-secondary small mb-4">Haz clic en cualquier imagen para verla en pantalla completa</p>
+                    <div class="row g-2" id="inv-gallery-grid"></div>
+                </div>
+            </section>
+
+            <!-- 8. CONFIRMACIÓN DE ASISTENCIA (RSVP) -->
+            <section class="mb-5" id="section-confirmation">
+                <div class="invitation-card p-4 text-center">
+                    <div class="rounded-circle bg-success-subtle text-success p-3 d-inline-flex mb-2">
+                        <i class="bi bi-check2-circle fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold mb-1">Confirmar Asistencia</h4>
+                    <p class="text-secondary small mb-4">Por favor confirma si nos podrás acompañar en este día tan especial.</p>
+
+                    <!-- Formulario RSVP -->
+                    <form id="rsvp-form" class="text-start mb-3">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Tu nombre completo <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="rsvp-name" placeholder="Ej: Fernando Romero" required>
+                        </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-semibold">Teléfono / WhatsApp</label>
+                                <input type="tel" class="form-control" id="rsvp-phone" placeholder="+51 987654321">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-semibold">Número de pases</label>
+                                <select class="form-select" id="rsvp-guests">
+                                    <option value="1">1 Persona</option>
+                                    <option value="2" selected>2 Personas</option>
+                                    <option value="3">3 Personas</option>
+                                    <option value="4">4 Personas</option>
+                                    <option value="5">Familia (5+)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Mensaje para los anfitriones</label>
+                            <textarea class="form-control" id="rsvp-notes" rows="2" placeholder="¡Muchas felicidades! Nos vemos pronto."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-invitation-action w-100 py-3 shadow fw-bold rounded-pill" id="btn-submit-rsvp">
+                            <i class="bi bi-check-lg me-1"></i> Confirmar mi Asistencia
+                        </button>
+                    </form>
+
+                    <!-- Confirmar por WhatsApp Directo -->
+                    <div class="pt-3 border-top">
+                        <span class="d-block small text-muted mb-2">¿Prefieres avisar por WhatsApp?</span>
+                        <a id="btn-wa-direct" href="#" target="_blank" class="btn btn-success w-100 py-2 rounded-pill fw-semibold">
+                            <i class="bi bi-whatsapp me-2"></i> Confirmar por WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. COMPARTIR INVITACIÓN -->
+            <section class="text-center mb-4" id="section-share">
+                <button type="button" class="btn btn-light rounded-pill px-4 py-2 border shadow-sm small fw-semibold" onclick="openShareModal()">
+                    <i class="bi bi-share me-1 text-primary"></i> Compartir Invitación
+                </button>
+            </section>
+
+            <!-- PIE DE INVITACIÓN -->
+            <div class="text-center py-4 border-top">
+                <a href="index.html" class="text-decoration-none d-inline-flex align-items-center gap-1 text-muted small opacity-75">
+                    <i class="bi bi-envelope-heart-fill text-primary"></i> Hecho con <strong>EvenCard</strong>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTONES FLOTANTES DE ACCIÓN RÁPIDA -->
+    <div class="floating-actions" id="floating-actions-bar">
+        <a id="btn-float-wa" href="#" target="_blank" class="btn-float btn-float-wa" title="Confirmar por WhatsApp">
+            <i class="bi bi-whatsapp"></i>
+        </a>
+        <button type="button" class="btn-float btn-float-share" onclick="openShareModal()" title="Compartir">
+            <i class="bi bi-share"></i>
+        </button>
+    </div>
+
+    <!-- MODAL LIGHTBOX PARA FOTOS -->
+    <div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-transparent border-0 text-center">
+                <div class="modal-body p-0 position-relative">
+                    <img id="lightbox-img" src="" class="img-fluid rounded-4 shadow-lg" style="max-height: 85vh;" alt="Foto ampliada">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE COMPARTIR -->
+    <div class="modal fade" id="publicShareModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg p-3">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Compartir Invitación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="modal-qr-container" class="my-3"></div>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="share-input-link" readonly>
+                        <button class="btn btn-outline-primary" type="button" onclick="window.Utils.copyToClipboard(document.getElementById('share-input-link').value)">
+                            <i class="bi bi-clipboard"></i> Copiar
+                        </button>
+                    </div>
+                    <a id="modal-wa-btn" href="#" target="_blank" class="btn btn-success w-100 py-2 rounded-pill fw-bold">
+                        <i class="bi bi-whatsapp me-2"></i> Enviar por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/invitation.js"></script>
+
+    <script>
+        let currentInvitation = null;
+        let countdownTimer = null;
+        let mapObj = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const slug = params.get('slug');
+
+            if (!slug) {
+                showNotFound();
+                return;
+            }
+
+            await loadInvitation(slug);
+        });
+
+        async function loadInvitation(slug) {
+            try {
+                currentInvitation = await window.InvitationService.getInvitationBySlug(slug);
+
+                if (!currentInvitation) {
+                    showNotFound();
+                    return;
+                }
+
+                renderInvitation(currentInvitation);
+
+                // Registrar visita silenciosa
+                window.InvitationService.registerView(currentInvitation.id);
+
+            } catch (err) {
+                console.error('Error al cargar invitación pública:', err);
+                showNotFound();
+            }
+        }
+
+        function showNotFound() {
+            document.getElementById('invitation-loading').classList.add('d-none');
+            document.getElementById('invitation-content').classList.add('d-none');
+            document.getElementById('invitation-not-found').classList.remove('d-none');
+            document.getElementById('invitation-not-found').classList.add('d-flex');
+        }
+
+        function renderInvitation(inv) {
+            document.getElementById('invitation-loading').classList.add('d-none');
+            document.getElementById('invitation-content').classList.remove('d-none');
+
+            // 1. Títulos y Meta Tags
+            document.title = `${inv.title} — EvenCard`;
+            document.getElementById('meta-title').textContent = inv.title;
+            if (inv.description) {
+                document.getElementById('meta-description').content = inv.description.substring(0, 160);
+                document.getElementById('og-description').content = inv.description.substring(0, 160);
+            }
+            if (inv.cover_image) {
+                document.getElementById('og-image').content = inv.cover_image;
+            }
+            document.getElementById('og-title').content = inv.title;
+
+            // 2. Aplicar Tema de Plantilla
+            const root = document.getElementById('invitation-body-root');
+            root.className = `invitation-body theme-${inv.template_id || 'elegante'}`;
+
+            // 3. Portada y Hero
+            document.getElementById('inv-title').textContent = inv.title;
+            if (inv.cover_image) {
+                document.getElementById('inv-cover-img').src = inv.cover_image;
+            } else {
+                document.getElementById('inv-cover-img').src = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80';
+            }
+
+            const formattedDate = window.Utils.formatDate(inv.event_date);
+            const formattedTime = inv.event_time ? ` · ${window.Utils.formatTime(inv.event_time)}` : '';
+            document.getElementById('inv-formatted-date').textContent = `${formattedDate}${formattedTime}`;
+
+            // Tipo de evento badge
+            const typeLabels = {
+                boda: 'Nuestra Boda',
+                cumpleanos: 'Mi Cumpleaños',
+                quince_anos: 'Mis Quince Años',
+                bautizo: 'Mi Bautizo',
+                baby_shower: 'Baby Shower',
+                primera_comunion: 'Primera Comunión',
+                aniversario: 'Aniversario',
+                empresarial: 'Evento Especial',
+                otro: 'Nuestra Celebración'
+            };
+            document.getElementById('inv-badge-type').textContent = typeLabels[inv.event_type] || 'Celebración';
+
+            // 4. Mensaje
+            if (inv.description) {
+                document.getElementById('inv-description').textContent = `"${inv.description}"`;
+            } else {
+                document.getElementById('section-message').classList.add('d-none');
+            }
+
+            // 5. Cuenta Regresiva
+            if (inv.settings?.show_countdown !== false && inv.event_date) {
+                startCountdown(inv.event_date, inv.event_time);
+            } else {
+                document.getElementById('section-countdown').classList.add('d-none');
+            }
+
+            // 6. Personas y Familiares
+            if (inv.settings?.show_parents !== false && inv.people && inv.people.length > 0) {
+                const peopleList = document.getElementById('inv-people-list');
+                peopleList.innerHTML = inv.people.map(p => `
+                    <div class="col-6 col-md-4">
+                        <small class="text-muted d-block text-capitalize">${p.role || p.type}</small>
+                        <strong class="d-block text-dark">${p.name}</strong>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('section-people').classList.add('d-none');
+            }
+
+            // 7. Cronograma / Itinerario
+            if (inv.settings?.show_schedule !== false && inv.schedule && inv.schedule.length > 0) {
+                const scheduleList = document.getElementById('inv-schedule-list');
+                scheduleList.innerHTML = inv.schedule.map(s => `
+                    <div class="timeline-item">
+                        <div class="timeline-bullet"></div>
+                        <span class="badge bg-primary-subtle text-primary mb-1 small">${s.event_time ? window.Utils.formatTime(s.event_time) : 'Actividad'}</span>
+                        <h6 class="fw-bold mb-0 text-dark">${s.title}</h6>
+                        ${s.description ? `<p class="text-secondary small mb-0">${s.description}</p>` : ''}
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('section-schedule').classList.add('d-none');
+            }
+
+            // 8. Ubicación
+            if (inv.settings?.show_location !== false && inv.location) {
+                document.getElementById('inv-loc-place').textContent = inv.location.place_name || 'Lugar del evento';
+                document.getElementById('inv-loc-address').textContent = inv.location.address || '';
+                document.getElementById('inv-loc-ref').textContent = inv.location.reference ? `Ref: ${inv.location.reference}` : '';
+
+                const lat = inv.location.latitude || -12.046374;
+                const lng = inv.location.longitude || -77.042793;
+
+                // Enlaces de Google Maps y Waze
+                const gmapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+                const wazeUrl = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+                document.getElementById('btn-google-maps').href = gmapsUrl;
+                document.getElementById('btn-waze').href = wazeUrl;
+
+                // Inicializar Mapa
+                setTimeout(() => {
+                    if (!mapObj) {
+                        mapObj = L.map('invitation-map').setView([lat, lng], 15);
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapObj);
+                        L.marker([lat, lng]).addTo(mapObj);
+                    }
+                }, 400);
+
+            } else {
+                document.getElementById('section-location').classList.add('d-none');
+            }
+
+            // 9. Galería Fotográfica
+            if (inv.settings?.show_gallery !== false && inv.gallery && inv.gallery.length > 0) {
+                const grid = document.getElementById('inv-gallery-grid');
+                grid.innerHTML = inv.gallery.map((g, idx) => `
+                    <div class="col-4">
+                        <div class="rounded-3 overflow-hidden shadow-sm ratio ratio-1x1" style="cursor: pointer;" onclick="openLightbox('${g.image_url}')">
+                            <img src="${g.image_url}" class="w-100 h-100 object-fit-cover transition hover-scale" alt="Foto ${idx + 1}">
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('section-gallery').classList.add('d-none');
+            }
+
+            // 10. WhatsApp y RSVP
+            const currentUrl = window.location.href;
+            const defaultWaMsg = `¡Hola! Confirmo mi asistencia al evento: "${inv.title}" 🎉. Nos vemos allá. Enlace: ${currentUrl}`;
+            const defaultWaUrl = window.Utils.generateWhatsAppUrl(defaultWaMsg);
+
+            document.getElementById('btn-float-wa').href = defaultWaUrl;
+
+            // Al hacer clic en confirmar por WhatsApp, tomar los datos del formulario si están completos
+            const btnWaDirect = document.getElementById('btn-wa-direct');
+            if (btnWaDirect) {
+                btnWaDirect.href = defaultWaUrl;
+                btnWaDirect.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('rsvp-name').value.trim();
+                    const guests = document.getElementById('rsvp-guests').value;
+                    const notes = document.getElementById('rsvp-notes').value.trim();
+
+                    let customMsg = `¡Hola! Confirmo mi asistencia al evento: "${inv.title}" 🎉.`;
+                    if (name) customMsg += `\nNombre: ${name}`;
+                    if (guests) customMsg += `\nNúmero de pases: ${guests} persona(s)`;
+                    if (notes) customMsg += `\nMensaje: ${notes}`;
+                    customMsg += `\nEnlace: ${currentUrl}`;
+
+                    window.open(window.Utils.generateWhatsAppUrl(customMsg), '_blank');
+                });
+            }
+
+            // Formulario RSVP
+            const rsvpForm = document.getElementById('rsvp-form');
+            rsvpForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('rsvp-name').value.trim();
+                const phone = document.getElementById('rsvp-phone').value.trim();
+                const guests = document.getElementById('rsvp-guests').value;
+                const notes = document.getElementById('rsvp-notes').value.trim();
+                const btn = document.getElementById('btn-submit-rsvp');
+
+                if (!name) return;
+
+                try {
+                    window.Utils.setLoadingButton(btn, true, 'Confirmando...');
+                    await window.InvitationService.submitRsvp(inv.id, {
+                        guest_name: name,
+                        phone: phone,
+                        num_guests: guests,
+                        notes: notes
+                    });
+
+                    confetti({ particleCount: 80, spread: 60 });
+                    window.Utils.showToast('¡Muchas gracias! Tu asistencia ha sido confirmada 🎉', 'success');
+                    rsvpForm.reset();
+                    btn.innerHTML = '<i class="bi bi-check-all me-1"></i> ¡Asistencia Confirmada!';
+                    btn.classList.replace('btn-invitation-action', 'btn-success');
+                    btn.disabled = true;
+                } catch (err) {
+                    console.error('Error al registrar RSVP:', err);
+                    const msg = err.message ? `No se pudo registrar: ${err.message}` : 'No se pudo registrar la confirmación.';
+                    window.Utils.showToast(msg, 'danger');
+                    window.Utils.setLoadingButton(btn, false);
+                }
+            });
+        }
+
+        // Cuenta Regresiva
+        function startCountdown(dateStr, timeStr) {
+            function update() {
+                const target = new Date(`${dateStr}T${timeStr || '00:00:00'}`).getTime();
+                const now = new Date().getTime();
+                const diff = target - now;
+
+                if (diff <= 0) {
+                    document.getElementById('cd-days').textContent = '00';
+                    document.getElementById('cd-hours').textContent = '00';
+                    document.getElementById('cd-minutes').textContent = '00';
+                    document.getElementById('cd-seconds').textContent = '00';
+                    if (countdownTimer) clearInterval(countdownTimer);
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+                document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+            }
+
+            update();
+            countdownTimer = setInterval(update, 1000);
+        }
+
+        // Lightbox para fotos
+        function openLightbox(imgUrl) {
+            document.getElementById('lightbox-img').src = imgUrl;
+            const modal = new bootstrap.Modal(document.getElementById('lightboxModal'));
+            modal.show();
+        }
+
+        // Modal de compartir
+        function openShareModal() {
+            const url = window.location.href;
+            document.getElementById('share-input-link').value = url;
+            document.getElementById('modal-wa-btn').href = window.Utils.generateWhatsAppUrl(`¡Te invito a nuestro evento! Mira la tarjeta aquí: ${url}`);
+            document.getElementById('modal-qr-container').innerHTML = `
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}" 
+                     alt="QR" class="p-2 border rounded-3 bg-white shadow-sm" style="max-width: 160px;">
+            `;
+            const modal = new bootstrap.Modal(document.getElementById('publicShareModal'));
+            modal.show();
+        }
+    </script>
+</body>
+</html>

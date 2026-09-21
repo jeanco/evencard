@@ -1,0 +1,392 @@
+/* ==============================================================================
+   EVENCARD — ESTILOS DE INVITACIONES PÚBLICAS Y PLANTILLAS
+   ============================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+
+/* Contenedor Principal de Invitación */
+.invitation-body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    background-color: #F8FAFC;
+    overflow-x: hidden;
+}
+
+.invitation-wrapper {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    min-height: 100vh;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+/* ==============================================================================
+   TEMA 1: ELEGANTE (Editorial, Oro, Playfair Serif)
+   ============================================================================== */
+.theme-elegante {
+    background-color: #FAF8F5;
+    color: #2D2A26;
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+.theme-elegante .invitation-wrapper {
+    background: #FFFDF9;
+    border-left: 1px solid #EDE6DD;
+    border-right: 1px solid #EDE6DD;
+}
+
+.theme-elegante .invitation-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #1F1D1A;
+}
+
+.theme-elegante .accent-gold {
+    color: #C5A059;
+}
+
+.theme-elegante .invitation-card {
+    background: #FFFFFF;
+    border: 1px solid #EFE8DE;
+    box-shadow: 0 8px 24px rgba(197, 160, 89, 0.08);
+    border-radius: 12px;
+}
+
+.theme-elegante .countdown-box {
+    background: #FAF6F0;
+    border: 1px solid #E8DFD1;
+    color: #3B342C;
+}
+
+.theme-elegante .btn-invitation-action {
+    background: linear-gradient(135deg, #D4AF37 0%, #AA8022 100%);
+    color: #FFFFFF;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* ==============================================================================
+   TEMA 2: ROMÁNTICA (Rosa rubor, Script delicado, Gran calidez)
+   ============================================================================== */
+.theme-romantica {
+    background-color: #FFF5F6;
+    color: #4A3E3D;
+    font-family: 'Outfit', sans-serif;
+}
+
+.theme-romantica .invitation-wrapper {
+    background: #FFFFFF;
+}
+
+.theme-romantica .invitation-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    color: #B25068;
+}
+
+.theme-romantica .invitation-card {
+    background: #FFF9FA;
+    border: 1px solid #FAD2E1;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(224, 122, 157, 0.1);
+}
+
+.theme-romantica .countdown-box {
+    background: #FFF0F3;
+    border: 1px solid #FAD2E1;
+    color: #B25068;
+    border-radius: 16px;
+}
+
+.theme-romantica .btn-invitation-action {
+    background: linear-gradient(135deg, #E07A5F 0%, #D8829D 100%);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 30px;
+}
+
+/* ==============================================================================
+   TEMA 3: MODERNA (Oscuro tecnológico, Violeta Neón, Glassmorphism)
+   ============================================================================== */
+.theme-moderna {
+    background-color: #0B0F19;
+    color: #E2E8F0;
+    font-family: 'Outfit', sans-serif;
+}
+
+.theme-moderna .invitation-wrapper {
+    background: #111827;
+    border-left: 1px solid #1F2937;
+    border-right: 1px solid #1F2937;
+}
+
+.theme-moderna h1, .theme-moderna h2, .theme-moderna h3, .theme-moderna h4 {
+    color: #FFFFFF;
+}
+
+.theme-moderna .invitation-title {
+    font-weight: 800;
+    background: linear-gradient(135deg, #818CF8 0%, #C084FC 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.theme-moderna .invitation-card {
+    background: #1F2937;
+    border: 1px solid #374151;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.theme-moderna .countdown-box {
+    background: #1E293B;
+    border: 1px solid #334155;
+    color: #38BDF8;
+    border-radius: 14px;
+}
+
+.theme-moderna .btn-invitation-action {
+    background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+    color: #FFFFFF;
+    border: none;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+/* ==============================================================================
+   TEMA 4: FLORAL (Verde salvia, Botánico, Orgánico)
+   ============================================================================== */
+.theme-floral {
+    background-color: #F3F6F3;
+    color: #2F3E32;
+    font-family: 'Cinzel', serif;
+}
+
+.theme-floral .invitation-wrapper {
+    background: #FAFCFA;
+}
+
+.theme-floral .invitation-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: #2B4C33;
+}
+
+.theme-floral .invitation-card {
+    background: #FFFFFF;
+    border: 1px solid #D5E0D5;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(43, 76, 51, 0.06);
+}
+
+.theme-floral .countdown-box {
+    background: #EFF4EF;
+    border: 1px solid #D1DDD1;
+    color: #2B4C33;
+    border-radius: 12px;
+}
+
+.theme-floral .btn-invitation-action {
+    background: linear-gradient(135deg, #3A6346 0%, #2A4732 100%);
+    color: #FFFFFF;
+    border: none;
+}
+
+/* ==============================================================================
+   TEMA 5: MINIMALISTA (Blanco y negro, Estilo Editorial, Gran Espaciado)
+   ============================================================================== */
+.theme-minimalista {
+    background-color: #FFFFFF;
+    color: #171717;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.theme-minimalista .invitation-wrapper {
+    background: #FFFFFF;
+    border-left: 1px solid #E5E5E5;
+    border-right: 1px solid #E5E5E5;
+}
+
+.theme-minimalista .invitation-title {
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #000000;
+}
+
+.theme-minimalista .invitation-card {
+    background: #FFFFFF;
+    border: 1px solid #171717;
+    border-radius: 4px;
+    box-shadow: 4px 4px 0px #171717;
+}
+
+.theme-minimalista .countdown-box {
+    background: #F5F5F5;
+    border: 1px solid #E5E5E5;
+    color: #171717;
+    border-radius: 4px;
+}
+
+.theme-minimalista .btn-invitation-action {
+    background: #000000;
+    color: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ==============================================================================
+   SECCIONES COMUNES DE LA INVITACIÓN
+   ============================================================================== */
+
+/* Hero de Invitación */
+.invitation-hero {
+    position: relative;
+    height: 480px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.invitation-hero-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.invitation-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
+    z-index: 2;
+}
+
+.invitation-hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 2.5rem 1.5rem;
+    width: 100%;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+/* Cuenta Regresiva */
+.countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.countdown-box {
+    padding: 1rem 0.5rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.countdown-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.countdown-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+}
+
+/* Timeline / Cronograma */
+.timeline-list {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline-list::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 8px;
+    width: 2px;
+    background: rgba(108, 99, 255, 0.2);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.8rem;
+}
+
+.timeline-bullet {
+    position: absolute;
+    left: -2rem;
+    top: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--ec-primary);
+    border: 3px solid #FFFFFF;
+    box-shadow: 0 0 0 2px var(--ec-primary);
+}
+
+/* Mapa */
+#invitation-map {
+    height: 240px;
+    width: 100%;
+    border-radius: 12px;
+    z-index: 5;
+}
+
+/* Botones flotantes de acción rápida */
+.floating-actions {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1050;
+}
+
+.btn-float {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #FFFFFF;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border: none;
+    transition: transform 0.2s ease;
+}
+
+.btn-float:hover {
+    transform: scale(1.1);
+}
+
+.btn-float-wa {
+    background-color: #25D366;
+}
+
+.btn-float-share {
+    background-color: var(--ec-primary);
+}
